@@ -10,7 +10,7 @@ Electrocardiograms, or EKGs, are a clinical test that records a visual pattern o
 
 ![12-lead image](/images/12lead.jpg)
 
-(A picture of a 12-lead EKG being simulated on a mannequin.  Each "lead" consists of an electrode sticker placed on the patient's skin which detects electrical activity.  In a 12-lead, each lead is placed in a different position to capture the heart's activity from different angles, allowing detection of more subtle phenomena than a single lead could measure alone.)
+(A picture of a 12-lead EKG being simulated on a mannequin.  Each "lead" is an electrode sticker placed on the patient's skin which detects electrical activity.  In a 12-lead, each lead is placed in a different position to capture the heart's activity from different angles, allowing detection of more subtle phenomena than a single lead could measure alone.  The measured waveform can be seen on the monitor behind the mannequin.)
   
 There are a number of healthcare settings in which automatic EKG interpretation could save patients’ lives.  For instance, many big-city ambulance services respond to most cardiac emergencies with technicians not trained in EKG interpretation.  This results in delayed treatment for conditions like heart attacks that go undetected until the patient arrives at the ER.  What if these EMTs could do an EKG, take a picture with their phone and have a neural network instantly alert them that the patient is having a heart attack?  Such a system could be implemented by EMS systems without hiring new personnel, developing new medical devices, and in many cases without even needing to purchase new equipment.  Yet despite the accurate models created by researchers, such applications do not exist.
   
