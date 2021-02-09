@@ -15,7 +15,7 @@ I’d propose to create a neural network based application that makes accurate n
 
 ![12-lead image](/images/12lead.jpg)
 
-(A picture of a 12-lead EKG being simulated on a mannequin.  Each "lead" is an electrode sticker placed on the patient's skin which detects electrical activity.  In a 12-lead, each lead is placed in a different position to capture the heart's activity from different angles, allowing detection of more subtle phenomena than a single lead could measure alone.  The measured waveform can be seen on the monitor behind the mannequin.)
+(A 12-lead EKG being simulated on a mannequin.  Each "lead" is an electrode sticker placed on the patient's skin which detects electrical activity.  In a 12-lead, each lead is placed in a different position to capture the heart's activity from different angles, allowing detection of more subtle phenomena than a single lead could measure alone.  The measured waveform can be seen on the monitor behind the mannequin.)
 
 ![paramedic image](/images/paramedic.jpg)
 
