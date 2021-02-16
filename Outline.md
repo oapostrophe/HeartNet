@@ -6,7 +6,7 @@ Yet challenges such as limited number of trained providers and overburdened emer
 
 Automatic computer EKG interpretation could potentially fill such gaps; however, the algorithm-based interpretation techniques used on currently existing EKG monitors are famously inaccurate and unreliable.
 
-While the past few years have seen researchers achieve breakthrough accuracy levels in automatic EKG interpretation using neural-network based approaches, such results have failed to be applied to healthcare practice beyond the lab.
+While the past few years have seen researchers achieve breakthrough accuracy levels in automatic EKG interpretation using neural-network based approaches, such results have not been applied to healthcare practice beyond the lab.
 
 We attempted to bridge the gap between research and practice by creating a mobile phone application that allows healthcare providers to easily utilize a neural-network system to accurately detect STEMis in 12-lead EKG printouts.
 
