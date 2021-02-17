@@ -1,6 +1,6 @@
 # HeartNet: A mobile app for automatic STEMi detection in EKGs.
 
-Authors: Sean O'Connor, Lucky Lim, Stephanie Yu
+Authors: Sean O'Connor, Lucky Lim, Stephanie Yu, Georgia Kenderova
 
 The rapid detection of ST-Elevated Myocardial Infarction through 12-lead EKG is one of the most important parts of effective emergency cardiac medicine.
 
