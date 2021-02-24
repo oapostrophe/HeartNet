@@ -1,6 +1,6 @@
 # Literature Review
 
-**Title:** Real-Time Multilead Convolutional NeuralNetwork for Myocardial Infarction Detection   
+**Title:** "Real-Time Multilead Convolutional Neural Network for Myocardial Infarction Detection"   
 **Authors:** Wenhan Liu, Mengxin Zhang, Yidan Zhang, Yuan Liao, Qijun Huang, Sheng Chang, Member, IEEE,Hao Wang, Member, IEEE, and Jin He  
 **Link:** https://ieeexplore.ieee.org/document/8103330  
 **Publication:** Sep. 2018 in IEEE JOURNAL OF BIOMEDICAL AND HEALTH INFORMATICS  
