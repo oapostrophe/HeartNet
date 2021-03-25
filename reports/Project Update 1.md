@@ -8,14 +8,14 @@
 
 # Project Update 2
 
-1. #### Accomplished: ####
+#### 1. Accomplished: ####
 - [x] We were able to generate a dataset of labeled ("MI" or "NORM") EKG images. Those were made by plotting individual leads in matplotlib and appending them together. The labels were extracted from a CSV document, containing the raw EKG data we downloaded online. 
 - [x] We used OpenCV to transform the plots to 512x512 grayscale images and append them into a 3 x 4 image for each patient similar to how an EKG printout is organized. 
 - [x] We first generated images for individual patients, but were eventually able to generate and label images for all patients in the dataset. We are currently working on training a neural network using the HPC. 
 
-2. #### Issues Encountered #### 
+#### 2. Issues Encountered #### 
 * We were not able to find any datasets that contained EKG images. Instead there were mostly datasets with raw data, which we had to find a way to transform into images. 
 * We also had some issues extracting the labels for the dataset from the CSV document; specifically, we struggled with figuring out how to filter out the correct labels from a python list containing the diagnoses using pandas. 
-* We are also having issues with training the network, but we've been unable so far to have fast ai read the data.
+* We are also having issues with training the network, as we've been unable so far to have fast ai read the data.
 
-3. We are all aiming for an A.
+#### 3. We are all aiming for an A. ####
