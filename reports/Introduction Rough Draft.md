@@ -29,6 +29,15 @@ preprocessing techniques improved the sensitivity, specificty, and area under th
 
 Due to the complexity of classifiers like CNNs and other neural networks, key decision makers like physicians and experienced clinicians stigmatize the black-box nature of neural network-based diagnoses. A more recent study using a ML fusion model consistening of Logistic Regression (LR), Artificial Neural Network (ANN), and Gradient Boosting Machine (GBM) and modified approach using 554 temporal-spatial features of 12-lead EKGs from a sample size of 1244 patients was able to achieve a 52% gain over commercial software ad 37% gain over "experienced" clinicians. From the study, the researchers concluded that linear classifiers like LR are just as effect as ANN, which lends the use of linear classification favorability in clinical practice (Al-Zaiti, et al., 2020).
 
+# Methods
+
+A dataset of labeled EKG images was generated ("MI", for "Myocardial Infraction," or "NORM," for "Normal/Healthy") . The images were made by plotting individual leads in matplotlib and appending them together. The labels were extracted from a CSV document, containing the raw EKG data from the PTB Diagnostic EKG Database. Subsequently, OpenCV was used to transform the plots to 512x512 pixel grayscale images and append them into a 3x4 image for each patient, similar to hoow an EKG printout is organized. Initially, sample images were generated for a set of patients; eventually, images depicting the EKG data were generated for all patients in the dataset. 
+In an effor to improve the quality of the generated images, WFDB library's plot function was used to to make them appear smoother and resemble more closely real EKGs.
+
+The software used to build and train the neural network was PyTorch and fastai. 
+
+As of right now, we are not sure what tools we will be using for analysis, but we will look into whether fastai offers any good ways to do that, as well as research other options, such as statistical packages like scipy.stats. We would want to check how many heart attacks the neural network misses to identify, which is different than overall accuracy, and how many false positives come up.
+
 ## Citations:
 1. https://www.heart.org/-/media/phd-files-2/science-news/2/2021-heart-and-stroke-stat-update/2021_heart_disease_and_stroke_statistics_update_fact_sheet_at_a_glance.pdf?la=en
 2. Bång A, Grip L, Herlitz J, et al. Lower mortality after prehospitalrecognition and treatment followed by fast tracking to coronary carecompared with admittance via emergency department in patients withST-elevation myocardial infarction. Int J Cardiol 2008;129:325-32
