@@ -31,7 +31,7 @@ Due to the complexity of classifiers like CNNs and other neural networks, key de
 
 # Methods
 
-A dataset of labeled EKG images was generated ("MI", for "Myocardial Infraction," or "NORM," for "Normal/Healthy") . The images were made by plotting individual leads in matplotlib and appending them together. The labels were extracted from a CSV document, containing the raw EKG data from the PTB Diagnostic EKG Database. Subsequently, OpenCV was used to transform the plots to 512x512 pixel grayscale images and append them into a 3x4 image for each patient, similar to hoow an EKG printout is organized. Initially, sample images were generated for a set of patients; eventually, images depicting the EKG data were generated for all patients in the dataset. 
+A dataset of labeled EKG images was generated ("MI", for "Myocardial Infraction," or "NORM," for "Normal/Healthy") . The images were made by plotting individual leads in matplotlib and appending them together. The labels were extracted from a CSV document, containing the raw EKG data from PTB-XL, a large publicly available electrocardiography dataset. Subsequently, OpenCV was used to transform the plots to 512x512 pixel grayscale images and append them into a 3x4 image for each patient, similar to hoow an EKG printout is organized. Initially, sample images were generated for a set of patients; eventually, images depicting the EKG data were generated for all patients in the dataset. 
 In an effor to improve the quality of the generated images, WFDB library's plot function was used to to make them appear smoother and resemble more closely real EKGs.
 
 The software used to build and train the neural network was PyTorch and fastai. 
