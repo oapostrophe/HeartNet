@@ -128,14 +128,11 @@ plt.plot(y_axis)
 plt.xticks([]), plt.yticks([])
 for spine in plt.gca().spines.values():
     spine.set_visible(False)
-
 filename = "./converted_imgs/2.png"
 fig.savefig(filename)
-
 im_gray2 = cv2.imread(filename, cv2.IMREAD_GRAYSCALE)
 im_gray2 = cv2.resize(im_gray2, (512, 512), interpolation = cv2.INTER_LANCZOS4)
 cv2.imwrite(filename, im_gray2)
-
 # concatenate
 im_v = cv2.hconcat([im_gray1, im_gray2]) 
 # show the output image 
