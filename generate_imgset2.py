@@ -2,6 +2,79 @@ import pandas as pd
 import numpy as np
 import wfdb
 import ast
+import matplotlib.pyplot as plt
+from wfdb.io._signal import downround, upround
+
+
+def calc_ecg_grids(minsig, maxsig, sig_units, fs, maxt, time_units):
+    """
+    Calculate tick intervals for ECG grids.
+    - 5mm 0.2s major grids, 0.04s minor grids.
+    - 0.5mV major grids, 0.125 minor grids.
+    10 mm is equal to 1mV in voltage.
+    Parameters
+    ----------
+    minsig : float
+        The min value of the signal.
+    maxsig : float
+        The max value of the signal.
+    sig_units : list
+        The units used for plotting each signal.
+    fs : float
+        The sampling frequency of the record.
+    maxt : float
+        The max time of the signal.
+    time_units : str
+        The x axis unit. Allowed options are: 'samples', 'seconds', 'minutes',
+        and 'hours'.
+    Returns
+    -------
+    major_ticks_x : ndarray
+        The locations of the major ticks on the x-axis.
+    minor_ticks_x : ndarray
+        The locations of the minor ticks on the x-axis.
+    major_ticks_y : ndarray
+        The locations of the major ticks on the y-axis.
+    minor_ticks_y : ndarray
+        The locations of the minor ticks on the y-axis.
+    """
+    # Get the grid interval of the x axis
+    if time_units == 'samples':
+        majorx = 0.2 * fs
+        minorx = 0.04 * fs
+    elif time_units == 'seconds':
+        majorx = 0.2
+        minorx = 0.04
+    elif time_units == 'minutes':
+        majorx = 0.2 / 60
+        minorx = 0.04/60
+    elif time_units == 'hours':
+        majorx = 0.2 / 3600
+        minorx = 0.04 / 3600
+
+    # Get the grid interval of the y axis
+    if sig_units.lower()=='uv':
+        majory = 500
+        minory = 125
+    elif sig_units.lower()=='mv':
+        majory = 0.5
+        minory = 0.125
+    elif sig_units.lower()=='v':
+        majory = 0.0005
+        minory = 0.000125
+    else:
+        raise ValueError('Signal units must be uV, mV, or V to plot ECG grids.')
+
+    major_ticks_x = np.arange(0, upround(maxt, majorx) + 0.0001, majorx)
+    minor_ticks_x = np.arange(0, upround(maxt, majorx) + 0.0001, minorx)
+
+    major_ticks_y = np.arange(downround(minsig, majory),
+                              upround(maxsig, majory) + 0.0001, majory)
+    minor_ticks_y = np.arange(downround(minsig, majory),
+                              upround(maxsig, majory) + 0.0001, minory)
+
+    return (major_ticks_x, minor_ticks_x, major_ticks_y, minor_ticks_y)
+
 
 def load_raw_data(df, sampling_rate, path):
     if sampling_rate == 100:
@@ -9,8 +82,12 @@ def load_raw_data(df, sampling_rate, path):
         # Original code: gets entire 100hz dataset
         data = [wfdb.rdsamp(path+f) for f in df.filename_lr]
         """
+        """
         # New code: Get just one record instead
-        return wfdb.rdrecord("./data/records100/00000/00001_lr")
+        return wfdb.rdrecord("./data/records500/00000/00001_hr")
+        """
+        return [wfdb.rdrecord(path+f) for f in df.filename_lr]
+        
     else:
         """ Original code: gets entire 500hz dataset
         data = [wfdb.rdsamp(path+f) for f in df.filename_hr]
@@ -28,30 +105,12 @@ path = "../data/"
 sampling_rate=100
 
 # load and convert annotation data
-# Y = pd.read_csv(path+'ptbxl_database.csv', index_col='ecg_id')
+Y = pd.read_csv(path+'ptbxl_database.csv', index_col='ecg_id')
+Y.scp_codes = Y.scp_codes.apply(lambda x: ast.literal_eval(x))
 
-# Y.scp_codes = Y.scp_codes.apply(lambda x: ast.literal_eval(x))
-
-# Load raw signal data
-X = load_raw_data(None, sampling_rate, path)
-
-fig = wfdb.plot_wfdb(X, time_units="seconds", ecg_grids="all", return_fig=True)
-fig.savefig("./data/test/second.png")
-
-
-"""
 # Load scp_statements.csv for diagnostic aggregation
 agg_df = pd.read_csv(path+'scp_statements.csv', index_col=0)
 agg_df = agg_df[agg_df.diagnostic == 1]
-
-# (Comment this out!)
-# Original code:
-def aggregate_diagnostic(y_dic):
-    tmp = []
-    for key in y_dic.keys():
-        if key in agg_df.index:
-            tmp.append(agg_df.loc[key].diagnostic_class)
-    return list(set(tmp))
 
 # Modified to store MI / non-MI:
 def aggregate_diagnostic(y_dic):
@@ -64,97 +123,69 @@ def aggregate_diagnostic(y_dic):
 # Apply diagnostic superclass
 Y['diagnostic_superclass'] = Y.scp_codes.apply(aggregate_diagnostic)
 
-# Re--comment out!
-# Split data into train and test
-test_fold = 10
-# Train
-X_train = X[np.where(Y.strat_fold != test_fold)]
-y_train = Y[(Y.strat_fold != test_fold)].diagnostic_superclass
-# Test
-X_test = X[np.where(Y.strat_fold == test_fold)]
-y_test = Y[Y.strat_fold == test_fold].diagnostic_superclass
 
-
-# Generate just first 100 records for testing
-first_100 = Y[Y.index < 100]
-
-# Generate images
-import cv2
-import matplotlib.pyplot as plt
+"""
+# Load raw signal data
+X = load_raw_data(Y, sampling_rate, path)
 
 patient_number = 1
 
-for patient in X[]:
+for record in X:
+    fig = wfdb.plot_wfdb(record, title=" ", time_units="seconds", ecg_grids="all", return_fig=True)
+    childs = fig.get_children()[1:]
+    for child in childs:
+        axes = child.axes
+        axes.set_ylim([-1, 1])
+        axes.tick_params(bottom=False, top=False, right=False, left=False)
 
-    # Concatenate 12 leads into an image
-    row_images = []
-    for row in range(3):
+        # Redundant with set axis off at end
+        #for spine in child.axes.spines.values():
+        #   spine.set_visible(False)
+        
+        # Copied ecg grid code
+        auto_xlims = axes.get_xlim()
+        auto_ylims= axes.get_ylim()
 
-        # Put 4 leads in each row
-        col_images = []
-        for col in range(4):
-            lead_number = row*4 + col
-            data = patient[ :, lead_number]
+        (major_ticks_x, minor_ticks_x, major_ticks_y,
+            minor_ticks_y) = calc_ecg_grids(auto_ylims[0], auto_ylims[1],
+                                            "mv", sampling_rate, auto_xlims[1],
+                                            "samples")
 
-            # Plot with MatPlotLib
-            fig = plt.figure(frameon=False)
-            plt.plot(data) 
+        min_x, max_x = np.min(minor_ticks_x), np.max(minor_ticks_x)
+        min_y, max_y = np.min(minor_ticks_y), np.max(minor_ticks_y)
 
-            # Remove borders, ticks, etc.
-            plt.xticks([]), plt.yticks([])
-            for spine in plt.gca().spines.values():
-                spine.set_visible(False)
+        for tick in minor_ticks_x:
+            axes.plot([tick, tick], [min_y,  max_y], c='#ededed',
+                            marker='|', zorder=1)
+        for tick in major_ticks_x:
+            axes.plot([tick, tick], [min_y, max_y], c='#bababa',
+                            marker='|', zorder=2)
+        for tick in minor_ticks_y:
+            axes.plot([min_x, max_x], [tick, tick], c='#ededed',
+                            marker='_', zorder=1)
+        for tick in major_ticks_y:
+            axes.plot([min_x, max_x], [tick, tick], c='#bababa',
+                            marker='_', zorder=2)
 
-            # Make image, resize, and convert to grayscale
-            filename = "../data/converted_imgs/" + str(lead_number) + ".png"
-            fig.savefig(filename)
-            plt.close(fig)
-            im_gray = cv2.imread(filename, cv2.IMREAD_GRAYSCALE)
-            im_gray = cv2.resize(im_gray, (512, 512), interpolation = cv2.INTER_LANCZOS4)
+        # Plotting the lines changes the graph. Set the limits back
+        axes.set_xlim(auto_xlims)
+        axes.set_ylim(auto_ylims)
 
-            # Add to images for current row
-            col_images.append(im_gray)
+        # Remove axes
+        axes.set_axis_off()
 
-        # Concatenate current row together, add to list of rows
-        im_row = cv2.hconcat(col_images)
-        row_images.append(im_row)
-
-    # Concatenate all rows into final image and save
-    im_final = cv2.vconcat(row_images)
-    cv2.imwrite("../data/converted_imgs/pt_" + str(patient_number) + ".png", im_final)
+    fig.savefig("../data/imgset2/initial/pt_"+str(patient_number)+".png")
     patient_number += 1
-
-#Re-comment out!
-# Outdated code for creating single image
-# Create second image
-y_axis = X[0, :, 2]
-fig = plt.figure(frameon=False)
-plt.plot(y_axis) 
-plt.xticks([]), plt.yticks([])
-for spine in plt.gca().spines.values():
-    spine.set_visible(False)
-
-filename = "./converted_imgs/2.png"
-fig.savefig(filename)
-
-im_gray2 = cv2.imread(filename, cv2.IMREAD_GRAYSCALE)
-im_gray2 = cv2.resize(im_gray2, (512, 512), interpolation = cv2.INTER_LANCZOS4)
-cv2.imwrite(filename, im_gray2)
-
-# concatenate
-im_v = cv2.hconcat([im_gray1, im_gray2]) 
-# show the output image 
-cv2.imwrite('./converted_imgs/final.png', im_v) 
+    plt.close(fig)
 
 
+"""
 # Divide up MI vs non-MI images into directories
 import shutil
 
 mi = Y.index[Y["diagnostic_superclass"]]
 
 for number in mi:
-    source = "../data/normal/pt_"+str(number)+".png"
-    target = "../data/mi/"
+    source = "../data/imgset2/normal/pt_"+str(number)+".png"
+    target = "../data/imgset2/mi/"
     shutil.move(source, target)
-"""
-
