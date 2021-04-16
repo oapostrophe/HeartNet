@@ -38,6 +38,93 @@ The software used to build and train the neural network was PyTorch and fastai.
 
 As of right now, we are not sure what tools we will be using for analysis, but we will look into whether fastai offers any good ways to do that, as well as research other options, such as statistical packages like scipy.stats. We would want to check how many heart attacks the neural network misses to identify, which is different than overall accuracy, and how many false positives come up.
 
+# Discussion
+
+Our first generated image dataset successfully plotted EKG waveforms and allowed training of a CNN; however, the generated images bore several striking differences from real-world EKG printouts.
+Our second generated dataset eliminated most of these differences and resulted in images appearing much closer to real EKG printouts.
+We then experimented with data augmentation by using FastAI to introduce artifact such as shadow that might appear on photographs of EKG printouts.
+(Insert results from model training here)
+With our first generated image dataset which was 512x512 images, we could not increase the batch size beyond 16. In order to pass this threshold, we reduced the size of the images in the second data set and experimented with different image sizes and various batch sizes.
+Below are the results from our batch size testing on reduced image sizes:
+
+Control: Batch size = 16, no resizing
+epoch     train_loss  valid_loss  error_rate  time    
+0         1.193201    0.861575    0.305000    00:07                              
+epoch     train_loss  valid_loss  error_rate  time    
+0         1.175750    0.778355    0.350000    00:10                              
+1         1.103686    0.751094    0.300000    00:10                              
+2         0.972977    0.609927    0.260000    00:10                              
+3         0.879336    0.703814    0.360000    00:10 
+
+Batch size = 16, items_tfms=Resize(300)
+epoch     train_loss  valid_loss  error_rate  time    
+0         1.193201    0.861575    0.305000    00:08                              
+epoch     train_loss  valid_loss  error_rate  time    
+0         1.175750    0.778355    0.350000    00:10                              
+1         1.103686    0.751094    0.300000    00:10                              
+2         0.972977    0.609927    0.260000    00:10                              
+3         0.879336    0.703814    0.360000    00:10 
+
+Batch size = 16, items_tfms=Resize(300)
+epoch     train_loss  valid_loss  error_rate  time    
+0         1.193201    0.861575    0.305000    00:07                              
+epoch     train_loss  valid_loss  error_rate  time    
+0         1.175750    0.778355    0.350000    00:10                              
+1         1.103686    0.751094    0.300000    00:10                              
+2         0.972977    0.609927    0.260000    00:09                              
+3         0.879336    0.703814    0.360000    00:09 
+
+Batch size = 14
+epoch     train_loss  valid_loss  error_rate  time    
+0         1.174931    0.863961    0.335000    00:08                                                                 
+epoch     train_loss  valid_loss  error_rate  time    
+0         1.166424    1.126207    0.455000    00:10                                                                 
+1         1.031477    0.636147    0.260000    00:10                                                                 
+2         0.954057    0.958069    0.420000    00:10                                                                 
+3         0.815557    0.648650    0.300000    00:10
+
+Batch size = 12
+epoch     train_loss  valid_loss  error_rate  time    
+0         1.204409    0.958627    0.400000    00:08                              
+epoch     train_loss  valid_loss  error_rate  time    
+0         1.151761    1.094397    0.395000    00:10                              
+1         1.023440    2.890649    0.495000    00:10                              
+2         0.891081    0.844348    0.360000    00:10                              
+3         0.826468    0.630925    0.310000    00:10 
+
+
+Batch size = 24, items_tfms=Resize(400)
+epoch     train_loss  valid_loss  error_rate  time    
+0         1.167504    0.818557    0.345000    00:07                              
+epoch     train_loss  valid_loss  error_rate  time    
+0         1.117804    0.810464    0.335000    00:09                              
+1         1.038550    0.655865    0.275000    00:09                              
+2         0.987740    0.615587    0.275000    00:09                              
+3         0.919624    0.536605    0.275000    00:09  
+
+Batch size = 32, items_tfms=Resize(400)
+epoch     train_loss  valid_loss  error_rate  time    
+0         1.128878    0.863806    0.370000    00:07                              
+epoch     train_loss  valid_loss  error_rate  time    
+0         1.112206    0.707882    0.355000    00:09                              
+1         1.031291    0.644120    0.300000    00:09                              
+2         0.947920    0.712319    0.300000    00:09                              
+3         0.867006    0.690136    0.285000    00:09
+
+Batch size = 32, items_tfms=Resize(400)
+epoch     train_loss  valid_loss  error_rate  time    
+0         1.179415    0.832696    0.415000    00:07                              
+epoch     train_loss  valid_loss  error_rate  time    
+0         1.124885    0.746533    0.350000    00:09                              
+1         1.061206    0.977342    0.370000    00:09                              
+2         1.014017    0.754363    0.315000    00:09                              
+3         0.958239    0.658920    0.285000    00:09  
+
+As you can see, increasing the batch size with 400x400 images did not lead to improvements in the error_rate (from 0.285 error rate in epoch 3 batch_size=24 to 0.285 error rate in epoch 3 batch_size=32). Our testing needs to further check the increase from a batch size of 16 to a batch size of 24 for 400x400 images.
+Our results suggest the feasibility of image-based EKG classification in clinical practice, although also point to the need for future work to augment transfer learning with other problem-specific techniques to attain accuracy high enough for clinical application, where the acceptable error rate is very low.
+Our work mostly acts as a proof of concept, pointing to the possibility of future work by researchers with access to proprietary EKG image datasets and/or partnership with clinical researchers to confirm the viability of classifying EKG images obtained in real clinical settings.
+
+
 ## Citations:
 1. https://www.heart.org/-/media/phd-files-2/science-news/2/2021-heart-and-stroke-stat-update/2021_heart_disease_and_stroke_statistics_update_fact_sheet_at_a_glance.pdf?la=en
 2. Bång A, Grip L, Herlitz J, et al. Lower mortality after prehospitalrecognition and treatment followed by fast tracking to coronary carecompared with admittance via emergency department in patients withST-elevation myocardial infarction. Int J Cardiol 2008;129:325-32
