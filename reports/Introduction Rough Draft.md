@@ -40,10 +40,12 @@ As of right now, we are not sure what tools we will be using for analysis, but w
 
 # Discussion
 
-Our first generated image dataset successfully plotted EKG waveforms and allowed training of a CNN; however, the generated images bore several striking differences from real-world EKG printouts.
-Our second generated dataset eliminated most of these differences and resulted in images appearing much closer to real EKG printouts.
-We then experimented with data augmentation by using FastAI to introduce artifact such as shadow that might appear on photographs of EKG printouts.
-(Insert results from model training here)
+Our first generated image dataset successfully plotted EKG waveforms and allowed training of a CNN; however, the generated images bore several striking differences from real-world EKG printouts. 
+
+Our second generated dataset eliminated most of these differences and resulted in images appearing much closer to real EKG printouts. 
+
+We then experimented with data augmentation by using FastAI to introduce artifact such as shadow that might appear on photographs of EKG printouts. 
+
 With our first generated image dataset which was 512x512 images, we could not increase the batch size beyond 16. In order to pass this threshold, we reduced the size of the images in the second data set and experimented with different image sizes and various batch sizes.
 Below are the results from our batch size testing on reduced image sizes:
 
@@ -120,8 +122,10 @@ epoch     train_loss  valid_loss  error_rate  time
 2         1.014017    0.754363    0.315000    00:09                              
 3         0.958239    0.658920    0.285000    00:09  
 
-As you can see, increasing the batch size with 400x400 images did not lead to improvements in the error_rate (from 0.285 error rate in epoch 3 batch_size=24 to 0.285 error rate in epoch 3 batch_size=32). Our testing needs to further check the increase from a batch size of 16 to a batch size of 24 for 400x400 images.
-Our results suggest the feasibility of image-based EKG classification in clinical practice, although also point to the need for future work to augment transfer learning with other problem-specific techniques to attain accuracy high enough for clinical application, where the acceptable error rate is very low.
+As you can see, increasing the batch size with 400x400 images did not lead to improvements in the error_rate (from 0.285 error rate in epoch 3 batch_size=24 to 0.285 error rate in epoch 3 batch_size=32). Our testing needs to further check the increase from a batch size of 16 to a batch size of 24 for 400x400 images. 
+
+Our results suggest the feasibility of image-based EKG classification in clinical practice, although also point to the need for future work to augment transfer learning with other problem-specific techniques to attain accuracy high enough for clinical application, where the acceptable error rate is very low. 
+
 Our work mostly acts as a proof of concept, pointing to the possibility of future work by researchers with access to proprietary EKG image datasets and/or partnership with clinical researchers to confirm the viability of classifying EKG images obtained in real clinical settings.
 
 
