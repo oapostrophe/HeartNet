@@ -1,3 +1,5 @@
+TODO: turn finished draft into webpage
+
 # Introduction
 
 Heart disease is consistently the number one cause of death in America, and 805,000 heart attacks occur in the US annually. (1)  Effective heart attack treatment relies on rapid diagnosis through 12-lead EKG in order to minimize the time to reperfusion therapy, and one of the largest improvements in the speed of diagnosis and treatment has been achieved through pre-hospital EKG analysis by Emergency Medical Services personnel.  For instance, one study found pre-arrival EMS identification of ST-Elevated Myocardial Infarction through 12-lead EKG lowered patients’ 30-day mortality rates from 15.3% to 7.3%, and 5-year mortality rates from 20.6% to 11.6%. (2)
@@ -30,6 +32,9 @@ preprocessing techniques improved the sensitivity, specificty, and area under th
 Due to the complexity of classifiers like CNNs and other neural networks, key decision makers like physicians and experienced clinicians stigmatize the black-box nature of neural network-based diagnoses. A more recent study using a ML fusion model consistening of Logistic Regression (LR), Artificial Neural Network (ANN), and Gradient Boosting Machine (GBM) and modified approach using 554 temporal-spatial features of 12-lead EKGs from a sample size of 1244 patients was able to achieve a 52% gain over commercial software ad 37% gain over "experienced" clinicians. From the study, the researchers concluded that linear classifiers like LR are just as effect as ANN, which lends the use of linear classification favorability in clinical practice (Al-Zaiti, et al., 2020).
 
 # Methods
+TODO: Sean add image generation
+TODO: Lucky add writeup of hyperparameter tuning
+TODO: Stephanie add RNN results
 
 A dataset of labelled EKG images was generated ("MI", for "Myocardial Infraction," or "NORM," for "Normal/Healthy") . The images were made by plotting individual leads in matplotlib and appending them together. The labels were extracted from a CSV document, containing the raw EKG data from PTB-XL, a large publicly available electrocardiography dataset. Subsequently, OpenCV was used to transform the plots to 512x512 pixel grayscale images and append them into a 3x4 image for each patient, similar to how an EKG printout is organized. Initially, sample images were generated for a set of patients; eventually, images depicting the EKG data were generated for all patients in the dataset. 
 In an effort to improve the quality of the generated images, WFDB library's plot function was used to make them appear smoother and resemble more closely real EKGs.
@@ -39,6 +44,10 @@ The software used to build and train the neural network was PyTorch and fastai.
 As of right now, we are not sure what tools we will be using for analysis, but we will look into whether fastai offers any good ways to do that, as well as research other options, such as statistical packages like scipy.stats. We would want to check how many heart attacks the neural network misses to identify, which is different than overall accuracy, and how many false positives come up.
 
 # Discussion
+
+TODO: Sean Fill out sentences in outline
+TODO: Lucky add writeup of hyperparameter tuning results
+TODO: Stephanie add RNN results
 
 Our first generated image dataset successfully plotted EKG waveforms and allowed training of a CNN; however, the generated images bore several striking differences from real-world EKG printouts. 
 
@@ -126,7 +135,14 @@ As you can see, increasing the batch size with 400x400 images did not lead to im
 
 Our results suggest the feasibility of image-based EKG classification in clinical practice, although also point to the need for future work to augment transfer learning with other problem-specific techniques to attain accuracy high enough for clinical application, where the acceptable error rate is very low. 
 
+
+TODO: Add reflection section based on this sentence
+
+
 Our work mostly acts as a proof of concept, pointing to the possibility of future work by researchers with access to proprietary EKG image datasets and/or partnership with clinical researchers to confirm the viability of classifying EKG images obtained in real clinical settings.
+
+
+TODO: Georgia add ethics session either separate or part of discussion?
 
 
 ## Citations:
