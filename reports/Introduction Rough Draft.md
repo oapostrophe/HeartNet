@@ -48,6 +48,7 @@ As of right now, we are not sure what tools we will be using for analysis, but w
 TODO: Sean Fill out sentences in outline
 TODO: Lucky add writeup of hyperparameter tuning results
 TODO: Stephanie add RNN results
+TODO: add figure for human ekg accuracy
 
 Our first generated image dataset successfully plotted EKG waveforms and allowed training of a CNN; however, the generated images bore several striking differences from real-world EKG printouts. 
 
