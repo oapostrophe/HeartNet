@@ -32,7 +32,6 @@ preprocessing techniques improved the sensitivity, specificty, and area under th
 Due to the complexity of classifiers like CNNs and other neural networks, key decision makers like physicians and experienced clinicians stigmatize the black-box nature of neural network-based diagnoses. A more recent study using a ML fusion model consistening of Logistic Regression (LR), Artificial Neural Network (ANN), and Gradient Boosting Machine (GBM) and modified approach using 554 temporal-spatial features of 12-lead EKGs from a sample size of 1244 patients was able to achieve a 52% gain over commercial software ad 37% gain over "experienced" clinicians. From the study, the researchers concluded that linear classifiers like LR are just as effect as ANN, which lends the use of linear classification favorability in clinical practice (Al-Zaiti, et al., 2020).
 
 # Methods
-TODO: Sean add image generation
 TODO: Lucky add writeup of hyperparameter tuning
 TODO: Stephanie add RNN results
 
@@ -40,11 +39,19 @@ To generate our images, we use the PTB-XL dataset, a collection of 21,837 labele
 
 We create an initial dataset by using Physionet's WFDB-Python library to read the numerical data from each record into a 12x1000 numpy array.  We then plot the 1000 numerical data points from each lead with Matploblib.  We transform the resulting plot into a 512x512 pixel grayscale image with OpenCV, then after repeating this process for all 12 leads we concatenate the resulting images.  The result is one 3 x 4 image displaying all 12 leads for each patient (see figure below).  We use pandas to extract labels from a CSV file in the initial dataset and move each image to a parent directory indicating its label as "mi" or "normal"; the result is "Dataset 1".
 
+![Image from Dataset 1](images/dataset_1.png)
+
 Iterating on our first generation efforts, we then generate a second dataset by using WFDB-Python's plotting functions instead of directly passing numerical data to Matplotlib.  We enable an option in these functions to draw a background grid similar to those typically seen in EKG printouts.  We modify the source code of the WFDB plotting functions to allow the editing of the resulting figure with Matplotlib, then standardize the vertical limits of each plot's display and remove figure features such as tick marks, legends, and axes labels.  As before, each file is moved to a parent directory indicating its label, resulting in "Dataset 2" (see figure below).
+
+![Image from Dataset 2](images/dataset_2.png)
 
 We then take our second dataset and attempt to augment our initial data to simulate an irregularity commonly seen in mobile phone photographs of EKG printouts: shadow overlying the image.  We use the Automold Road Image Augmentation Library to randomly add between 1 and 3 5-vertex shadows to each image in Dataset 2.  We save the results as new images, resulting in "Dataset 3" (see figure below).
 
+![Image from Dataset 3](images/dataset_3.png)
+
 Finally, to test the classification of our images using an RNN, we generate a fourth dataset with each lead in its own image.  We use the same methods as for Datset 1, except stopping after generating a figure of each lead with Matplotlib.  No transformation is applied with OpenCV, nor are the images concatenated together.  The result is 12 images for each patient plotting each of the 12 EKG leads separately, making up "Dataset 4" (see figure below).
+
+![Image from Dataset 4](images/dataset_4.png)
 
 The software used to build and train the neural network was PyTorch and fastai. 
 
@@ -52,7 +59,6 @@ As of right now, we are not sure what tools we will be using for analysis, but w
 
 # Discussion
 
-TODO: Sean Fill out sentences in outline
 TODO: Lucky add writeup of hyperparameter tuning results
 TODO: Stephanie add RNN results
 TODO: add figure for human ekg accuracy
