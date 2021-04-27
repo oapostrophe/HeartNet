@@ -67,12 +67,15 @@ Our first generated image dataset successfully plotted EKG waveforms and allowed
 
 The images in dataset 1 are also significantly more choppy than typically seen in real EKG printouts.  This can partially be explained by the sampling resolution of our data, which at 100 Hz is significantly higher than resolutions in the 40-60Hz range recorded by many clinical monitors; the result is less "smooth" lines as more fine-grain details of the waveform are captured.  It's also possible that other pre-processing techniques to smooth data are used by clinical equipment, in order to reduce the effects of noise and make waveforms easier for humans to read.  Other notable differences include the lack of a background grid in our images and the separation of each lead by a significant amount of whitespace.
 
-Despite these differences, however, the fact that a CNN was able to classify these images with a high degree of accuracy indicates that these images successfully visualize the important diagnostic features in each record.  As such, the dataset successfully serves its purpose as a proof of concept for image-based classification of EKGs, despite its lack of realistic representation of the images we were hoping to simulate.
+Despite these differences, however, the fact that a CNN was able to classify these images with a high degree of accuracy indicates that these images successfully visualize the important diagnostic features in each record.  As such, the dataset successfully serves its purpose as a proof of concept for image-based classification of EKGs, despite its lack of realistic representation of the sort of images we were hoping to simulate.
 
-![Image from Dataset 1](images/dataset_1.png)
+Image from Dataset 1
+![Image from Dataset 1](images/dataset_1.png) 
+
+Image of real EKG printout for comparison
 ![Real EKG for comparison](images/real_ekg1.jpg)
 
-We address many 
+Our second dataset addresses many of the issues with the first by utilizing the WFDB library's plotting functions, which eliminates both the large vertical spikes and much of the choppiness in the original images.  Not only does this dataset produce smoother and more realistic looking waveforms, but it also adds a background grid and removes most of the excess whitespace separating images.  However, dataset 2 did introduce a separate issue in the layout of each lead in the image.  While real EKG images are typically arranged in a 3 x 4 grid, our images vertically stack all leads in a single column.  Due to TODO: finish this
 
 We then experimented with data augmentation by using FastAI to introduce artifact such as shadow that might appear on photographs of EKG printouts. 
 
