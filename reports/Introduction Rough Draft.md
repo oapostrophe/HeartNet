@@ -164,17 +164,25 @@ As you can see, increasing the batch size with 400x400 images did not lead to im
 
 Our results suggest the feasibility of image-based EKG classification in clinical practice, although also point to the need for future work to augment transfer learning with other problem-specific techniques to attain accuracy high enough for clinical application, where the acceptable error rate is very low.  Missing a Myocardial Infarction could result in lack of treatment that could potentially cause outcomes up to death, while false positive diagnosis could potentially subject a patient to unnecessary invasive procedures with similarly severe consequences.  Error rates by Emergency Room Physicians are approximately 3% (TODO SEAN: add numbers/citation), and prior non-image based work has achieved a similar level of accuracy.  However, our classifier already substantially outperforms general physicians (add numbers), existing non-neural network based classification algorithms (add numbers), (and classification accuracy by EMS personnel? see if numbers can be found).
 
+## Ethics
+Our work touches on a number of ethical issues and dilemmas, including: 
+- Who is held responsible in the case where the model's prediction is incorrect and the diagnosis and treatment lead to an unfavorable outcome for the patient?
+- Issues around collection of sensitive health data - should it be collected in an effort to improve the model? In what way should it be collected?
+- Does the data used to train the model capture the heterogeneity of the real world? How can a more comprehensive dataset be assembled?
+- How do we find and remove potential biases in the dataset? 
+- Who benefits from the development and potential commercialization of such a tool?
 
-TODO: Georgia Add reflection section based on this sentence
+Such questions are important in assessing the model and making sure that introducing it in the health system will be beneficial and not cause harm.
 
-## Reflection
+TODO: Georgia add ethics session either separate or part of discussion?
+
+# Reflection
 
 Our work mostly acts as a proof of concept, pointing to the possibility of future work by researchers with access to proprietary EKG image datasets and/or partnership with clinical researchers to confirm the viability of classifying EKG images obtained in real clinical settings. While our goal was to create an app that assists EMTs and other health professionals in quickly and accurately diagnosing patients, we recognize that our current model requires more work and calibration to achieve this. For example, the image dataset that we generated is still not sufficiently similar to real EKGs, or what a picture of an EKG may look like. While we tried to plot and visualize the data to resemble as closely as possible an actual EKG, improvements can be made. For example, the plot lines can be made to appear red, which is typically the color of EKGs (see Fig. 2); further image augmentation and more realistic shadows may be implemented to mimic real-world pictures; in general, improvements in the visual representation of the data that make it appear more similar to real EKG printouts may lead to lower error rates when the model is tested on real pictures. Ideally, a dataset of real pictures of EKGs can be assembled and used to train the model.
 
-Additionally, further experimentation with adding more and different types of layers to the NN, as well as changing batch size, is needed to achieve the best accuracy-computation cost trade-off.
+Additionally, further experimentation with adding more and different types of layers to the NN, as well as changing batch size, is needed to achieve the best accuracy-computation cost trade-off. Finally, in an attempt to asses the need for such a tool (as well as its impact), a more thorough understanding of the ethics must be achieved.
 
 
-TODO: Georgia add ethics session either separate or part of discussion?
 
 
 ## Citations:
