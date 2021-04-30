@@ -90,7 +90,8 @@ Fig. 5: Image from dataset 4
 ![Image from Dataset 4](images/dataset_4.png)
 
 ## CNN Training
-Resnet Comparisons:
+
+### Resnet Comparisons:
 Controls:
 - no resizing
 - batch size=16
@@ -171,7 +172,7 @@ epoch     train_loss  valid_loss  error_rate  recall_score  precision_score  f1_
 
 As we can see from the results, resnet34 generates the lowest error rate among the other resnets with an error rate of 0.38 at epoch 12.
 
-Batch Size Testing:
+#### Batch Size Testing:
 Controls: 
 - Resnet34
 - no resizing
@@ -323,7 +324,7 @@ When the batch size is 4, at epoch 6 we get a low error rate of 0.327660 (I just
 
 When training with a batch size 100, the terminal returns a cuda out of memory error so we have to resize (reduce) the size of the images.
 
-Resizing Testing:
+#### Resizing Testing:
 new approach resize down 400x400, batch size 128, 
 
 Resnet34, Batch size  128, epoch 15, resize factor 400
@@ -413,7 +414,7 @@ epoch     train_loss  valid_loss  error_rate  recall_score  precision_score  f1_
 
 We notice here that resizing and reducing the size of the images does not lead to information loss thus the results are not impacted when the quality of the images is reduced.
 
-Final Hyperparameter Trials:
+#### Final Hyperparameter Trials:
 
 Resnet34, Batch size  32, epoch 15
 epoch     train_loss  valid_loss  error_rate  recall_score  precision_score  f1_score  time    
