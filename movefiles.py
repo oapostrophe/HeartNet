@@ -4,7 +4,7 @@ from pathlib import Path
 # compress normal images
 # https://stackoverflow.com/questions/10607468/how-to-reduce-the-image-file-size-using-pil
 
-directory_in_str = "./imgset2/mi"
+directory_in_str = "../imgset2/mi"
 
 pathlist = Path(directory_in_str).glob('**/*.png')
 counter = 0
@@ -19,7 +19,7 @@ for path in pathlist:
     # I downsize the image with an ANTIALIAS filter (gives the highest quality)
     # foo = foo.resize((400,400),Image.ANTIALIAS)
 
-    foo.save("./data/testset/testmi/"+path.name)
+    foo.save("./imgset_temp/mi_temp/"+path.name)
     # foo.save("./normalvmi/reducednorm/"+path.name,optimize=True,quality=95)
     counter += 1
     if counter == 500:
