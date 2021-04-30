@@ -1,5 +1,3 @@
-TODO: turn finished draft into webpage
-
 # Introduction
 
 Heart disease is consistently the number one cause of death in America, and 805,000 heart attacks occur in the US annually. (1)  Effective heart attack treatment relies on rapid diagnosis through 12-lead EKG in order to minimize the time to reperfusion therapy, and one of the largest improvements in the speed of diagnosis and treatment has been achieved through pre-hospital EKG analysis by Emergency Medical Services personnel.  For instance, one study found pre-arrival EMS identification of ST-Elevated Myocardial Infarction through 12-lead EKG lowered patients’ 30-day mortality rates from 15.3% to 7.3%, and 5-year mortality rates from 20.6% to 11.6%. (2)
