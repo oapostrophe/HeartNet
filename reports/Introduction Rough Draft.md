@@ -32,9 +32,7 @@ preprocessing techniques improved the sensitivity, specificty, and area under th
 Due to the complexity of classifiers like CNNs and other neural networks, key decision makers like physicians and experienced clinicians stigmatize the black-box nature of neural network-based diagnoses. A more recent study using a ML fusion model consistening of Logistic Regression (LR), Artificial Neural Network (ANN), and Gradient Boosting Machine (GBM) and modified approach using 554 temporal-spatial features of 12-lead EKGs from a sample size of 1244 patients was able to achieve a 52% gain over commercial software ad 37% gain over "experienced" clinicians. From the study, the researchers concluded that linear classifiers like LR are just as effect as ANN, which lends the use of linear classification favorability in clinical practice (Al-Zaiti, et al., 2020).
 
 # Methods
-TODO: Lucky add writeup of hyperparameter tuning
-
-To come up with our final set of hyperparameters to run on the entire imgset2, we first systematically tested the following resnets: resnet18, resnet34, resnet50. We controlled for the data set size (777 images in both mi and normal folders), batch size (16), epochs (20), and resizing (none). From the results, resnet34 and resnet50 produced an error rate oof 0.38 at epoch 12 and 0.37 at epoch 7 respectively. While resnet50 had the lowest error rate of all epochs, resnet34 produced lower training losses and lower validation losses than resnet50, so we chose resnet34 to systematically test batch size and resizing. In order to save time, we reduced the data set size from 777 to 400 images in each folder.
+To come up with our final set of hyperparameters to run on the entire imgset2, we first systematically tested the following resnets: resnet18, resnet34, resnet50. We controlled for the data set size (777 images in both mi and normal folders), batch size (16), epochs (20), and resizing (none). From the results, resnet34produced an error rate of 0.38 at epoch 12. Resnet34 also produced lower training losses and lower validation losses than the other resnets, so we chose resnet34 to systematically test batch size and resizing. In order to save time, we reduced the data set size from 777 to 400 images in each folder.
 
 Batch Size Testing:
 To figure out which batch size produce the best results, we trained the model using 4, 8, 16, 24, 32, 40 and 64 for the batch size and controlled for the other hyperparameters (400 images in the dataset, 15 epochs, and no resizing). From a comparison of the metrics, we determined that 16, 32, and 64 produced the best results. Testing for larger batch sizes proved difficult as we ran into memory errors. However, through controlling the other hyperparameters and conducting resizing testing, we found that resizing had no impact on the results and thus no information is loss in the process of resizing. Thus we were able to resize the images down and increase the batch size to 128. Thus we were able to train the model using 4, 8, 16, 24, 32, 40, 64, and 128 for the batch sizes. 
@@ -149,6 +147,7 @@ epoch     train_loss  valid_loss  error_rate  recall_score  precision_score  f1_
 18        0.402331    0.890843    0.490323    1.000000      0.509677         0.675214  00:35     
 19        0.379989    0.889967    0.490323    1.000000      0.509677         0.675214  00:35 
 
+As we can see from the results, resnet34 generates the lowest error rate among the other resnets with an error rate of 0.38 at epoch 12.
 Batch Size Testing:
 Controls: 
 - Resnet34
