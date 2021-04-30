@@ -54,10 +54,10 @@ With our first generated image dataset which was 512x512 images, we could not in
 Control: Batch size = 16, no resizing epoch train_loss valid_loss error_rate time
 0 1.193201 0.861575 0.305000 00:07
 epoch train_loss valid_loss error_rate time
-0 1.175750 0.778355 0.350000 00:10
-1 1.103686 0.751094 0.300000 00:10
-2 0.972977 0.609927 0.260000 00:10
-3 0.879336 0.703814 0.360000 00:10
+0 1.175750 0.778355 0.350000 00:10 
+1 1.103686 0.751094 0.300000 00:10 
+2 0.972977 0.609927 0.260000 00:10 
+3 0.879336 0.703814 0.360000 00:10 
 
 Batch size = 16, items_tfms=Resize(300) epoch train_loss valid_loss error_rate time
 0 1.193201 0.861575 0.305000 00:08
