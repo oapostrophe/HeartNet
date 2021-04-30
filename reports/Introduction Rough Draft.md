@@ -148,6 +148,7 @@ epoch     train_loss  valid_loss  error_rate  recall_score  precision_score  f1_
 19        0.379989    0.889967    0.490323    1.000000      0.509677         0.675214  00:35 
 
 As we can see from the results, resnet34 generates the lowest error rate among the other resnets with an error rate of 0.38 at epoch 12.
+
 Batch Size Testing:
 Controls: 
 - Resnet34
@@ -296,7 +297,9 @@ epoch     train_loss  valid_loss  error_rate  recall_score  precision_score  f1_
 13        0.652133    0.688035    0.353191    0.023810      0.666667         0.045977  00:16     
 14        0.629146    0.684688    0.353191    0.071429      0.545455         0.126316  00:16   
 
-batch size 100 cuda out of memory error
+When the batch size is 4, at epoch 6 we get a low error rate of 0.327660 (I just noticed this now so I will have to add this to a hyperparameter I have to explore). We notice that for batch size 32, we get a low error rate of ~0.36 and comparatively low validation and training loss at epoch 12. For batch size 16, we get a low error rate of ~0.37 and comparatively low validation and training loss at epoch 10. Batch size 64 also gets low error rates of around 0.34-0.39 after epoch 9 with relatively low training and validattion losses.
+
+When training with a batch size 100, the terminal returns a cuda out of memory error so we have to resize (reduce) the size of the images.
 
 Resizing Testing:
 new approach resize down 400x400, batch size 128, 
@@ -385,6 +388,56 @@ epoch     train_loss  valid_loss  error_rate  recall_score  precision_score  f1_
 12        0.763332    2.928426    0.642553    1.000000      0.357447         0.526646  00:18     
 13        0.743765    2.998181    0.642553    1.000000      0.357447         0.526646  00:18     
 14        0.733455    3.007145    0.642553    1.000000      0.357447         0.526646  00:18     
+
+We notice here that resizing and reducing the size of the images does not lead to information loss thus the results are not impacted when the quality of the images is reduced.
+
+Final Hyperparameter Trials:
+
+Resnet34, Batch size  32, epoch 15
+epoch     train_loss  valid_loss  error_rate  recall_score  precision_score  f1_score  time    
+0         0.592978    0.556228    0.248454    0.000922      0.500000         0.001840  03:32     
+epoch     train_loss  valid_loss  error_rate  recall_score  precision_score  f1_score  time    
+/home/CAMPUS/slab2019/anaconda3/lib/python3.8/site-packages/sklearn/metrics/_classification.py:1221: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+0         0.488386    0.615993    0.248454    0.000000      0.000000         0.000000  04:50     
+1         0.419885    0.575407    0.248454    0.000000      0.000000         0.000000  04:52     
+2         0.418290    0.546055    0.248454    0.000000      0.000000         0.000000  04:50     
+3         0.400961    0.569583    0.217312    0.435023      0.584158         0.498679  04:51     
+4         0.373029    0.643854    0.374628    0.808295      0.380477         0.517404  04:49     
+5         0.377766    0.554076    0.256011    0.664516      0.488814         0.563281  04:48     
+6         0.355055    0.449868    0.192810    0.444240      0.668516         0.533776  04:48     
+7         0.325130    0.457167    0.209755    0.606452      0.573670         0.589606  04:48     
+8         0.303448    0.522989    0.247996    0.705069      0.500654         0.585534  04:47     
+9         0.315929    0.647850    0.333181    0.811982      0.413227         0.547715  04:48     
+10        0.301271    0.620199    0.316693    0.775115      0.424747         0.548777  04:47     
+11        0.255606    0.570673    0.277765    0.688479      0.460543         0.551902  04:47     
+12        0.265308    0.656293    0.339592    0.787097      0.405508         0.535255  04:47     
+13        0.259017    0.608794    0.296084    0.752074      0.443478         0.557949  04:47     
+14        0.270167    0.690407    0.344401    0.787097      0.401504         0.531756  04:47  
+
+Resnet34, Batch size  64, epoch 15
+epoch     train_loss  valid_loss  error_rate  recall_score  precision_score  f1_score  time    
+0         0.677108    0.636303    0.248454    0.000000      0.000000         0.000000  03:23     
+epoch     train_loss  valid_loss  error_rate  recall_score  precision_score  f1_score  time    
+0         0.488871    0.698323    0.248454    0.000000      0.000000         0.000000  04:39     
+1         0.436395    0.600500    0.248454    0.000000      0.000000         0.000000  04:39     
+2         0.417207    0.560733    0.248683    0.000922      0.333333         0.001838  04:39     
+3         0.394394    1.140321    0.750401    1.000000      0.248739         0.398384  04:39     
+4         0.378545    0.726919    0.670025    0.949309      0.264035         0.413157  04:39     
+5         0.356737    0.701254    0.508816    0.863594      0.311192         0.457520  04:39     
+6         0.347170    1.368876    0.751088    1.000000      0.248568         0.398165  04:39     
+7         0.327890    0.850209    0.663613    0.972350      0.268927         0.421326  04:39     
+8         0.314793    0.946016    0.746737    0.997235      0.249309         0.398894  04:39     
+9         0.310391    0.908477    0.689947    0.971429      0.261150         0.411638  04:39     
+10        0.284364    1.149254    0.746508    0.994470      0.249019         0.398302  04:39     
+11        0.257435    1.723110    0.750630    0.998157      0.248451         0.397869  04:39     
+12        0.261871    1.682301    0.749714    0.997235      0.248564         0.397940  04:39     
+13        0.248655    2.259446    0.750630    0.999078      0.248567         0.398090  04:39     
+14        0.240725    2.521528    0.750630    1.000000      0.248682         0.398311  04:39
+
+// loss a bs 16 and bs 4 trial run because my VSCode Window crashed and I couldn't ssh back into the terminal, will include it after I run it again. sorry :'(.
+Because of this we cannot form a conclusion of what is the best set of hyperparameters from the given sets mentioned in the methods section. However, we can note that when training the model with the entire dataset and a batch size of 64, we can achieve an error rate of 0.248454 from epoch 0 to epoch 2. The error rate for batch size 32 is the same from epoch 0 to epoch 2, but the training and validation loss of batch size 32 is marginally lower and thus better. We can reduce the epochs from 15 to 3 now that we know the error rate gets significantly worst after 3 epochs.
+
 
 TODO: Stephanie add RNN results
 TODO: add figure for human ekg accuracy
