@@ -553,10 +553,13 @@ Our work touches on a number of ethical issues and dilemmas, including:
 - **Issues around collection of sensitive health data - should it be collected in an effort to improve the model? In what way should it be collected?**
   - Data from the real world would be essential in improving the accuracy of the model. In that sense, it would be helpful to collect such data, even though it is highly sensitive. In order to do that in a more sensitive way, this information should be anonymized and consent from the patient should be obtained (once they are able to give it). 
 - **Does the data used to train the model capture the heterogeneity of the real world? How can a more comprehensive dataset be assembled?**
+  - Most likely the datset we're currently using is not incredibly diverse. A potential way to address this issue is to partner with hospitals and medical centers around the world to collect data from a diverse group of individuals. This approach introduces several complications, such as what incentive would such institutions have to collect and provide that data; having to navigate different health systems and ways that consent is obtained (would consent obtained in, for example, Vietnam be accepted in wherever the company is situated/headquartered?); and other logistical questions.
 - **How do we find and remove potential biases in the dataset?** 
+  - 
 - **Who benefits from the development and potential commercialization of such a tool?**
+  - 
 
-Such questions are important in assessing the model and making sure that introducing it in the health system will be beneficial and not cause harm.
+Addressing these questions in depth is important in assessing the model and making sure that introducing it into the health system will be beneficial and not cause harm.
 
 # Reflection
 
