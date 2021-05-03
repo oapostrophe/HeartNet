@@ -548,11 +548,13 @@ Our CNN results suggest the feasibility of image-based EKG classification in cli
 
 ## Ethics
 Our work touches on a number of ethical issues and dilemmas, including: 
-- Who is held responsible in the case where the model's prediction is incorrect and the diagnosis and treatment lead to an unfavorable outcome for the patient?
-- Issues around collection of sensitive health data - should it be collected in an effort to improve the model? In what way should it be collected?
-- Does the data used to train the model capture the heterogeneity of the real world? How can a more comprehensive dataset be assembled?
-- How do we find and remove potential biases in the dataset? 
-- Who benefits from the development and potential commercialization of such a tool?
+- **Who is held responsible in the case where the model's prediction is incorrect and the diagnosis and treatment lead to an unfavorable outcome for the patient?**
+   - We imagine that our model would be used in situations where the caregiver is not properly trained to read EKGs, so the patient is already put at risk of inaccurate diagnosis. In this specific case, it seems like the neither the model, nor the caregiver should be held accountable, simply because the latter is not trained to read an EKG and hence respond appropriately already, so the addition of our model would technically only improve the rates of accurate and timely diagnosis. If there's ever an implementation used by medical professionals trained to read EKGs, it seems like they should be the ones responsible, as they are making the final call. In general, our model only analyzes the EKG as accurately as possible, but is not the entity reponsible for the actions taken given this information. To avoid such situations as much as possible, NN models should be implemented in the real world only after certain accuracy is achieved, so that they don't lead to loss of life and other negative consequences.
+- **Issues around collection of sensitive health data - should it be collected in an effort to improve the model? In what way should it be collected?**
+  - Data from the real world would be essential in improving the accuracy of the model. In that sense, it would be helpful to collect such data, even though it is highly sensitive. In order to do that in a more sensitive way, this information should be anonymized and consent from the patient should be obtained (once they are able to give it). 
+- **Does the data used to train the model capture the heterogeneity of the real world? How can a more comprehensive dataset be assembled?**
+- **How do we find and remove potential biases in the dataset?** 
+- **Who benefits from the development and potential commercialization of such a tool?**
 
 Such questions are important in assessing the model and making sure that introducing it in the health system will be beneficial and not cause harm.
 
