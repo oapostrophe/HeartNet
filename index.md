@@ -78,7 +78,7 @@ Fig. 1: Image from Dataset 1
 Fig. 2: Image of real EKG printout for comparison
 ![Real EKG for comparison](images/real_ekg1.jpg)
 
-Our second dataset addresses many of the issues with the first by utilizing the WFDB library's plotting functions, which eliminates both the large vertical spikes and much of the choppiness in the original images.  Not only does this dataset produce smoother and more realistic looking waveforms, but it also adds a background grid and removes most of the excess whitespace separating images.  However, dataset 2 did introduce a separate issue in the layout of each lead in the image.  While real EKG images are typically arranged in a 3 x 4 grid, these images vertically stack all leads in a single column.  We opted not to horizontally concatenate the leads from each image in this way due to finding that each plot was substantially wider than typically seen in EKG printouts, possibly indicating the 10-second samples in our data represent a longer timespan than is usually captured in a single printout.  While we considered taking a narrower subset of the image, doing so could possibly result in removing the section of the EKG where the key diagnostic features determining it as an MI are present.  Without beaty-by-beat annotation of our dataset, we opted to leave the images in a one-column format.  Again, this dataset was able to be classified with 90%ccuracy by a CNN, indicating that it successfully visualized key diagnostic features and serves as proof of concept for image-based EKG classification.
+Our second dataset addresses many of the issues with the first by utilizing the WFDB library's plotting functions, which eliminates both the large vertical spikes and much of the choppiness in the original images.  Not only does this dataset produce smoother and more realistic looking waveforms, but it also adds a background grid and removes most of the excess whitespace separating images.  However, dataset 2 did introduce a separate issue in the layout of each lead in the image.  While real EKG images are typically arranged in a 3 x 4 grid, these images vertically stack all leads in a single column.  We opted not to horizontally concatenate the leads from each image in this way due to finding that each plot was substantially wider than typically seen in EKG printouts, possibly indicating the 10-second samples in our data represent a longer timespan than is usually captured in a single printout.  While we considered taking a narrower subset of the image, doing so could possibly result in removing the section of the EKG where the key diagnostic features determining it as an MI are present.  Without beaty-by-beat annotation of our dataset, we opted to leave the images in a one-column format.  Again, this dataset was able to be classified with 90% accuracy by a CNN, indicating that it successfully visualized key diagnostic features and serves as proof of concept for image-based EKG classification.
 
 Fig. 3: Image from dataset 2
 ![Image from Dataset 2](images/dataset_2.png)
@@ -87,6 +87,10 @@ Our augmentation in the third dataset successfully simulated one of the most com
 
 Fig. 4: Image from dataset 3
 ![Image from Dataset 3](images/dataset_3.png)
+
+Shadow on real EKG images for comparison
+![shadow image](images/shadow1.png)
+![shadow image2](images/shadow2.png)
 
 Finally, our fourth dataset generated individual lead images similar to those that might be captured by photographing part of an EKG printout at a time.  These allowed us to feed sequential images into an RNN to test the performance of such a network on MI classification.
 
@@ -100,6 +104,7 @@ Before analyzing the results, let’s first define the [metrics](https://machine
 - Precision provides a measure of correct MI predictions. It computes the ratio of correct MI predictions to the total number of MI predictions, and is most commonly used to minimize false positives. 
 - F1_score provides a single measure of both recall and precision, and is calculated via this formula: (2\*recall_score\*precision) / (recall_score\*precision).
 
+Fig. 6: Comparison of Resnet Architectures
 ![Results from Resnet Comparisons](images/resnet_comparison.png)
 
 This chart summarizes our findings from experimentation with different variants of ResNet architecture (each distinguished by its number of layers) with batch sizes of 8 for 25 epochs. 
@@ -111,15 +116,21 @@ This chart summarizes our findings from experimentation with different variants 
 We can observe that ResNet 152 outperforms each of the other ResNet models in the categories of error_rate, precision, and f1_score (ResNet 50 was a close second in each category). In other words, with the exception of minimizing false negatives (as measured by recall_score), ResNet 152 is our model of choice for image-based EKG classification.
 
 We decided to pursue further hyperparameter tuning with ResNet 152 while finding the optimal batch size. The following table captures our findings: 
+
+Fig. 7: Comparison of Batch Sizes
 ![Results from Batch Size Comparisons](images/batch_comparison.png)
 
 We can observe that a batch size of 8 minimizes error_rate and maximizes f1_score, while a batch size of 16 corresponds to the best recall_score and second lowest error rate. 
 
-Finally, to determine the optimal hyperparameter combinations, we used our top two best-performing ResNets, ResNet 50 and ResNet 152, and batch sizes, 8 and 16, to conduct four trials on the full Dataset 2, 25 epochs each. 
+## Final results
+We then used our top two best-performing ResNets, ResNet 50 and ResNet 152, and batch sizes, 8 and 16, to conduct four trials on the full Dataset 2, 25 epochs each. 
 
+Fig. 8: Results training on full datset
 ![Final results](images/final_results.png)
 
-The data indicates that the best-performing hyperparameter combination is ResNet 152 and a batch size of 16, as the model with this combination yields the best values for our two most important measures of performance, error_rate (10.01%) and f1_score (77.92%). Notably, this model can distinguish MI EKGs from normal EKGs with 89.99% accuracy! It is worth noting, however, that each of the four combinations achieved significant classification success: from trial to trial, we can observe that the differences in both metrics are nearly negligible.
+The data indicates that the best-performing hyperparameter combination is ResNet 152 and a batch size of 16, as the model with this combination yields the best values for our two most important measures of performance, error_rate (10.01%) and f1_score (77.92%). Notably, this model can distinguish MI EKGs from normal EKGs with **89.99% accuracy**!  It is worth noting, however, that each of the four combinations achieved significant classification success: from trial to trial, we can observe that the differences in both metrics are nearly negligible.
+
+It's also important to note that the recall score, 70.2% ,is substantially lower than the overall accuracy.  Our dataset contains a larger portion of normal EKGs (66%) than MI (34%); as such, classifiers don't necessarily need to detect MI with a high level of sensitivity in order to achieve a good overall acuracy.  For instance, consider a hypothetical classifier that labeled every EKG as normal: despite missing every MI, such a classifier would still have an accuracy of 66%.  The fact that recall is 20% lower than accuracy seems to indicate our model is somewhat biased towards labelling EKGs as normal, which in a model whose purpose is to detect MI is less than ideal.  Thus, the recall and F1 scores are perhaps ultimately a better metric of our model's success.
 
 ![Final training graph](images/final_train_epochs.png)
 
@@ -132,16 +143,12 @@ As an addendum to our explorations, we decided to investigate the performance of
 ![Shadows training loss](images/shadows_train_epochs.png)
 ![Shadows validation loss](images/shadows_valid_epochs.png)
 
-
-
-
-
 ## RNN Testing
 The RNN we created was unsuccessful: we observed that throughout the entirety of the training process, the cost fluctuated drastically from training sample to training sample, rotating among the values of 0.0, 50.0 and 100.0. Since the training cost exhibited no decreasing or stabilizing patterns, we conclude that our RNN failed to learn.
 
 ## Overall results 
 
-Our CNN results suggest the feasibility of image-based EKG classification, although also pointing to the need to augment transfer learning with problem-specific techniques in future work.  While our classifier achieves a high rate of accuracy, its sensitivity is not yet high enough for clinical application, where the acceptable error rate is very low.  Missing an MI could result in lack of treatment that could potentially cause outcomes up to death, while false positive diagnosis could potentially subject a patient to unnecessary invasive procedures with similarly severe consequences.  Error rates in STEMi classification by Emergency Room Physicians are approximately 3% [\[5\]](#Citations), and prior non-image based work has achieved similar levels of accuracy.  Techniques from this prior work could potentially be used to improve our own results,  such as lead pooling and sub 2D convolutional layers[\[7\]](#Citations), and pre-processing images for noise reduction and pulse segmentation[\[8\]](#Citations).  However, our classifier already substantially outperforms general physicians and Emergency Room Residents, who have been found to have accuracy rates of 70% and 68% respectively [\[6\]](#Citations).  It also outperforms the non-neural network based algorithm used in the LifePak 12, one of the most popular devices for pre-hospital 12-lead EKG acquisition by EMS, which one study noted only detected 58% of STEMIs [\[4\]](#Citations).
+Our CNN results suggest the feasibility of image-based EKG classification, although also pointing to the need to augment transfer learning with problem-specific techniques in future work.  While our classifier achieves 90% accuracy, its sensitivity of 70% is not yet high enough for clinical application, where the acceptable error rate is very low.  Missing an MI could result in lack of treatment that could potentially cause outcomes up to death, while false positive diagnosis could potentially subject a patient to unnecessary invasive procedures with similarly severe consequences.  Error rates in STEMi classification by Emergency Room Physicians are approximately 3% [\[5\]](#Citations), and prior non-image based work has achieved sensitivity as high as 95%.[\[7\]](#Citations)  Techniques from this prior work could potentially be used to improve our own results,  such as lead pooling and sub 2D convolutional layers[\[7\]](#Citations), and pre-processing images for noise reduction and pulse segmentation[\[8\]](#Citations).  However, our classifier already substantially outperforms general physicians and Emergency Room Residents, who have been found to have accuracy rates of 70% and 68% respectively [\[6\]](#Citations).  It also outperforms the non-neural network based algorithm used in the LifePak 12, one of the most popular devices for pre-hospital 12-lead EKG acquisition by EMS, which one study noted only detected 58% of STEMIs [\[4\]](#Citations).
 
 ## Ethics
 Our work touches on a number of ethical issues and dilemmas, including: 
@@ -160,7 +167,7 @@ Addressing these questions in depth is important in assessing the model and maki
 
 # Reflection
 
-Our work mostly acts as a proof of concept, pointing to the possibility of future work by researchers with access to proprietary EKG image datasets and/or partnership with clinical researchers to confirm the viability of classifying EKG images obtained in real clinical settings. While our goal was to create an app that assists EMTs and other health professionals in quickly and accurately diagnosing patients, we recognize that our current model requires more work and calibration to achieve this. For example, the image dataset that we generated is still not sufficiently similar to real EKGs, or what a picture of an EKG may look like. While we tried to plot and visualize the data to resemble as closely as possible an actual EKG, improvements can be made. For example, the plot lines can be made to appear red, which is typically the color of EKGs (see Fig. 2); further image augmentation and more realistic shadows may be implemented to mimic real-world pictures; in general, improvements in the visual representation of the data that make it appear more similar to real EKG printouts may lead to lower error rates when the model is tested on real pictures. Ideally, a dataset of real pictures of EKGs can be assembled and used to train the model.
+Our work mostly acts as a proof of concept, pointing to the possibility of future work by researchers with access to proprietary EKG image datasets and/or partnership with clinical researchers to confirm the viability of classifying EKG images obtained in real clinical settings. While our goal was to create an app that assists EMTs and other health professionals in quickly and accurately diagnosing patients, we recognize that our current model requires more work and calibration to achieve this. For example, the image dataset that we generated is still not sufficiently similar to real EKGs to train a model that can classify actual pictures of EKGs. While we tried to plot and visualize the data to resemble as closely as possible an actual EKG, improvements can be made. For example, the plot lines can be made to appear black with a red background grid, which is typically the color of EKGs (see Fig. 2); further image augmentation to simulating factors such as lighting may be implemented to mimic real-world pictures; in general, improvements in the visual representation of the data that make it appear more similar to real EKG printouts may lead to lower error rates when the model is tested on real pictures. Ideally, a dataset of real pictures of EKGs can be assembled and used to train the model.
 
 Additionally, further experimentation with adding more and different types of layers to the NN, as well as changing batch size, is needed to achieve the best accuracy-computation cost trade-off. Finally, in an attempt to asses the need for such a tool (as well as its impact), a more thorough understanding of the ethics must be achieved.
 
