@@ -18,7 +18,7 @@ Yet despite the well-established lifesaving effects of performing pre-hospital 1
 
 In such EMS systems where staff trained in EKG interpretation are unavailable, automatic computer interpretation of EKG could potentially fill in the gap to provide the lifesaving benefits of pre-hospital diagnosis to  heart attack patients.  However, current MI detection algorithms in use on EKG monitors are unreliable.  For instance, one study found that a commonly used EMS monitor identified just 58% of STEMIs, missing the diagnosis in the remaining 42% of STEMI patients. [\[4\]](#Citations)
 
-![lifepak12](images/Lifepak 12.jpg)
+![lifepak12](images/Lifepak12.jpg)
 
 *The Lifepak 12, a commonly used EMS heart monitor whose built-in software was found to have only 58% sensitivity in identifying STEMIs.*
 
