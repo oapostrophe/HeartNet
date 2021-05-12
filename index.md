@@ -88,10 +88,11 @@ Our augmentation in the third dataset successfully simulated one of the most com
 Fig. 4: Image from dataset 3
 ![Image from Dataset 3](images/dataset_3.png)
 
+Shadows on real EKG images for comparison
 ![shadow image](images/shadow1.png)
 
 ![shadow image2](images/shadow2.png)
-Shadows on real EKG images for comparison
+
 
 Finally, our fourth dataset generated individual lead images similar to those that might be captured by photographing part of an EKG printout at a time.  These allowed us to feed sequential images into an RNN to test the performance of such a network on MI classification.
 
@@ -105,8 +106,8 @@ Before analyzing the results, let’s first define the [metrics](https://machine
 - Precision provides a measure of correct MI predictions. It computes the ratio of correct MI predictions to the total number of MI predictions, and is most commonly used to minimize false positives. 
 - F1_score provides a single measure of both recall and precision, and is calculated via this formula: (2\*recall_score\*precision) / (recall_score\*precision).
 
-![Results from Resnet Comparisons](images/resnet_comparison.png)
 Fig. 6: Comparison of Resnet Architectures
+![Results from Resnet Comparisons](images/resnet_comparison.png)
 
 This chart summarizes our findings from experimentation with different variants of ResNet architecture (each distinguished by its number of layers) with batch sizes of 8 for 25 epochs. 
 - The two entries for ResNet 18 indicate the best performing epochs for recall_score (0.525) and error_rate (0.229), respectively. 
@@ -133,15 +134,20 @@ The data indicates that the best-performing hyperparameter combination is ResNet
 
 It's also important to note that the recall score, 70.2% ,is substantially lower than the overall accuracy.  Our dataset contains a larger portion of normal EKGs (66%) than MI (34%); as such, classifiers don't necessarily need to detect MI with a high level of sensitivity in order to achieve a good overall acuracy.  For instance, consider a hypothetical classifier that labeled every EKG as normal: despite missing every MI, such a classifier would still have an accuracy of 66%.  The fact that recall is 20% lower than accuracy seems to indicate our model is somewhat biased towards labelling EKGs as normal, which in a model whose purpose is to detect MI is less than ideal.  Thus, the recall and F1 scores are perhaps ultimately a better metric of our model's success.
 
+Fig. 9: Training loss on full Dataset 2
 ![Final training graph](images/final_train_epochs.png)
 
+Fig 10: Validation loss on full Dataset 2
 ![Final validation graph](images/final_valid_epochs.png)
 
 According to these graphs, training loss for each of our four final models trended downwards until the 20 epoch mark, where it began to plateau or even experience a slight increase. Validation loss, on the other hand, experienced consistent, shallow decreases until the 20 epoch mark (with the exception of an unforeseen spike at 17 epochs for the ResNet 50 with a batch size of 8), where it began to plateau or trend upwards. These observations (namely, the decreasing training loss coupled with an increasing validation loss) enabled us to conclude that training each model beyond 20 epochs may have resulted in slight overfitting. 
 
 As an addendum to our explorations, we decided to investigate the performance of our best-performing model on Dataset 3 (an augmented version of our dataset, in which shadows overlay a portion of the images). We were able to achieve 89.58% classification accuracy and an f1_score of 77.70%, demonstrating that the data augmentation did not result in a statistically significant decrease in the performance of our model. The following graph captures the decline of training loss that corresponded with the increase in number of epochs and reveals the successful learning that our model underwent. 
 
+Fig. 11: Training loss on Dataset 3 (images with shadows)
 ![Shadows training loss](images/shadows_train_epochs.png)
+
+Fig. 12: Validation loss on Dataset 3 (images with shadows)
 ![Shadows validation loss](images/shadows_valid_epochs.png)
 
 ## RNN Testing
