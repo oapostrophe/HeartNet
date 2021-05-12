@@ -88,7 +88,7 @@ Our augmentation in the third dataset successfully simulated one of the most com
 Fig. 4: Image from dataset 3
 ![Image from Dataset 3](images/dataset_3.png)
 
-Shadows on real EKG images for comparison
+Fig. 4.5: Shadows on real EKG images for comparison
 ![shadow image](images/shadow1.png)
 
 ![shadow image2](images/shadow2.png)
