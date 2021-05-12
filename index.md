@@ -88,10 +88,10 @@ Our augmentation in the third dataset successfully simulated one of the most com
 Fig. 4: Image from dataset 3
 ![Image from Dataset 3](images/dataset_3.png)
 
-Fig. 4.5: Shadows on real EKG images for comparison
 ![shadow image](images/shadow1.png)
 
 ![shadow image2](images/shadow2.png)
+Shadows on real EKG images for comparison
 
 
 Finally, our fourth dataset generated individual lead images similar to those that might be captured by photographing part of an EKG printout at a time.  These allowed us to feed sequential images into an RNN to test the performance of such a network on MI classification.
