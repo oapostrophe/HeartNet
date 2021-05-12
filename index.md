@@ -72,31 +72,38 @@ The images in dataset 1 are also significantly more choppy than typically seen i
 
 Despite these differences, however, the fact that a CNN was able to classify these images with 89% accuracy indicates that these images successfully visualize the important diagnostic features in each record.  As such, the dataset successfully serves its purpose as a proof of concept for image-based classification of EKGs, despite its lack of realistic representation of the sort of images we were hoping to simulate.
 
-Fig. 1: Image from Dataset 1
+Fig. 1: Image from Dataset 1 
+
 ![Image from Dataset 1](images/dataset_1.png)
 
-Fig. 2: Image of real EKG printout for comparison
+Fig. 2: Image of real EKG printout for comparison 
+
 ![Real EKG for comparison](images/real_ekg1.jpg)
 
 Our second dataset addresses many of the issues with the first by utilizing the WFDB library's plotting functions, which eliminates both the large vertical spikes and much of the choppiness in the original images.  Not only does this dataset produce smoother and more realistic looking waveforms, but it also adds a background grid and removes most of the excess whitespace separating images.  However, dataset 2 did introduce a separate issue in the layout of each lead in the image.  While real EKG images are typically arranged in a 3 x 4 grid, these images vertically stack all leads in a single column.  We opted not to horizontally concatenate the leads from each image in this way due to finding that each plot was substantially wider than typically seen in EKG printouts, possibly indicating the 10-second samples in our data represent a longer timespan than is usually captured in a single printout.  While we considered taking a narrower subset of the image, doing so could possibly result in removing the section of the EKG where the key diagnostic features determining it as an MI are present.  Without beaty-by-beat annotation of our dataset, we opted to leave the images in a one-column format.  Again, this dataset was able to be classified with 90% accuracy by a CNN, indicating that it successfully visualized key diagnostic features and serves as proof of concept for image-based EKG classification.
 
 Fig. 3: Image from dataset 2 
+
 ![Image from Dataset 2](images/dataset_2.png)
 
 Our augmentation in the third dataset successfully simulated one of the most common distortions present in real pictures of EKG printouts: shadow overlaying the image.  While the shadows produced aren’t entirely realistic, they do provide a good test for the sort of artifact a classifier would have to overcome on EKG images captured during clinical practice.
 
-Fig. 4: Image from dataset 3
+Fig. 4: Image from dataset 3 
+
 ![Image from Dataset 3](images/dataset_3.png)
+
+Fig. 4.5: Shadows on real EKG images for comparison 
 
 ![shadow image](images/shadow1.png)
 
 ![shadow image2](images/shadow2.png)
-Fig. 4.5: Shadows on real EKG images for comparison
+
 
 
 Finally, our fourth dataset generated individual lead images similar to those that might be captured by photographing part of an EKG printout at a time.  These allowed us to feed sequential images into an RNN to test the performance of such a network on MI classification.
 
-Fig. 5: Image from dataset 4
+Fig. 5: Image from dataset 4 
+
 ![Image from Dataset 4](images/dataset_4.png)
 
 ## Hyperparameter Tuning
@@ -106,7 +113,8 @@ Before analyzing the results, let’s first define the [metrics](https://machine
 - Precision provides a measure of correct MI predictions. It computes the ratio of correct MI predictions to the total number of MI predictions, and is most commonly used to minimize false positives. 
 - F1_score provides a single measure of both recall and precision, and is calculated via this formula: (2\*recall_score\*precision) / (recall_score\*precision).
 
-Fig. 6: Comparison of Resnet Architectures
+Fig. 6: Comparison of Resnet Architectures 
+
 ![Results from Resnet Comparisons](images/resnet_comparison.png)
 
 This chart summarizes our findings from experimentation with different variants of ResNet architecture (each distinguished by its number of layers) with batch sizes of 8 for 25 epochs. 
@@ -119,7 +127,8 @@ We can observe that ResNet 152 outperforms each of the other ResNet models in th
 
 We decided to pursue further hyperparameter tuning with ResNet 152 while finding the optimal batch size. The following table captures our findings: 
 
-Fig. 7: Comparison of Batch Sizes
+Fig. 7: Comparison of Batch Sizes 
+
 ![Results from Batch Size Comparisons](images/batch_comparison.png)
 
 We can observe that a batch size of 8 minimizes error_rate and maximizes f1_score, while a batch size of 16 corresponds to the best recall_score and second lowest error rate. 
@@ -127,27 +136,32 @@ We can observe that a batch size of 8 minimizes error_rate and maximizes f1_scor
 ## Final results
 We then used our top two best-performing ResNets, ResNet 50 and ResNet 152, and batch sizes, 8 and 16, to conduct four trials on the full Dataset 2, 25 epochs each. 
 
-Fig. 8: Results training on full datset
+Fig. 8: Results training on full datset 
+
 ![Final results](images/final_results.png)
 
 The data indicates that the best-performing hyperparameter combination is ResNet 152 and a batch size of 16, as the model with this combination yields the best values for our two most important measures of performance, error_rate (10.01%) and f1_score (77.92%). Notably, this model can distinguish MI EKGs from normal EKGs with **89.99% accuracy**!  It is worth noting, however, that each of the four combinations achieved significant classification success: from trial to trial, we can observe that the differences in both metrics are nearly negligible.
 
 It's also important to note that the recall score, 70.2% ,is substantially lower than the overall accuracy.  Our dataset contains a larger portion of normal EKGs (66%) than MI (34%); as such, classifiers don't necessarily need to detect MI with a high level of sensitivity in order to achieve a good overall acuracy.  For instance, consider a hypothetical classifier that labeled every EKG as normal: despite missing every MI, such a classifier would still have an accuracy of 66%.  The fact that recall is 20% lower than accuracy seems to indicate our model is somewhat biased towards labelling EKGs as normal, which in a model whose purpose is to detect MI is less than ideal.  Thus, the recall and F1 scores are perhaps ultimately a better metric of our model's success.
 
-Fig. 9: Training loss on full Dataset 2
+Fig. 9: Training loss on full Dataset 2 
+
 ![Final training graph](images/final_train_epochs.png)
 
-Fig 10: Validation loss on full Dataset 2
+Fig 10: Validation loss on full Dataset 2 
+
 ![Final validation graph](images/final_valid_epochs.png)
 
 According to these graphs, training loss for each of our four final models trended downwards until the 20 epoch mark, where it began to plateau or even experience a slight increase. Validation loss, on the other hand, experienced consistent, shallow decreases until the 20 epoch mark (with the exception of an unforeseen spike at 17 epochs for the ResNet 50 with a batch size of 8), where it began to plateau or trend upwards. These observations (namely, the decreasing training loss coupled with an increasing validation loss) enabled us to conclude that training each model beyond 20 epochs may have resulted in slight overfitting. 
 
 As an addendum to our explorations, we decided to investigate the performance of our best-performing model on Dataset 3 (an augmented version of our dataset, in which shadows overlay a portion of the images). We were able to achieve 89.58% classification accuracy and an f1_score of 77.70%, demonstrating that the data augmentation did not result in a statistically significant decrease in the performance of our model. The following graph captures the decline of training loss that corresponded with the increase in number of epochs and reveals the successful learning that our model underwent. 
 
-Fig. 11: Training loss on Dataset 3 (images with shadows)
+Fig. 11: Training loss on Dataset 3 (images with shadows) 
+
 ![Shadows training loss](images/shadows_train_epochs.png)
 
-Fig. 12: Validation loss on Dataset 3 (images with shadows)
+Fig. 12: Validation loss on Dataset 3 (images with shadows) 
+
 ![Shadows validation loss](images/shadows_valid_epochs.png)
 
 ## RNN Testing
