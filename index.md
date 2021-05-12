@@ -72,7 +72,7 @@ The images in dataset 1 are also significantly more choppy than typically seen i
 
 Despite these differences, however, the fact that a CNN was able to classify these images with 89% accuracy indicates that these images successfully visualize the important diagnostic features in each record.  As such, the dataset successfully serves its purpose as a proof of concept for image-based classification of EKGs, despite its lack of realistic representation of the sort of images we were hoping to simulate.
 
-*Fig. 1: Image from Dataset 1 *
+Fig. 1: Image from Dataset 1
 
 ![Image from Dataset 1](images/dataset_1.png)
 
