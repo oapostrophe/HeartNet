@@ -26,7 +26,7 @@ The past few years have seen researchers achieve breakthrough accuracy levels in
 
 We attempt to resolve this difficulty by testing an alternate approach to neural-network based STEMi detection using images.  While digital signals are difficult to directly obtain in clinical practice, EKG monitors are equipped with printing capabilities that are routinely used to record readings.  If neural networks can accurately detect STEMis in images of 12-lead EKGs, then such printouts could be used as the basis of classification independently of the specific EKG device.  For instance, we envision an image-based approach being the basis of a mobile phone application that would allow providers to easily take a photo of an EKG printout and have it automatically classified.   Such an application could be developed by any researchers without needing access to proprietary software, and could be applied in clinical practice by healthcare agencies without needing to purchase specialized equipment.  Thus the feasibility of an image-based classification approach for EKGs could represent a large step in bridging the gap between research achievements and clinical practice.
 
-![Ekg Strip](ekg_strip.jpg)
+![Ekg Strip](images/ekg_strip.jpg)
 
 *An EKG strip printed out from a heart monitor: healthcare providers typically interpret these strips, rather than a live feed on the monitor.*
 
