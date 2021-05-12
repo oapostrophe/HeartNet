@@ -105,8 +105,8 @@ Before analyzing the results, let’s first define the [metrics](https://machine
 - Precision provides a measure of correct MI predictions. It computes the ratio of correct MI predictions to the total number of MI predictions, and is most commonly used to minimize false positives. 
 - F1_score provides a single measure of both recall and precision, and is calculated via this formula: (2\*recall_score\*precision) / (recall_score\*precision).
 
-Fig. 6: Comparison of Resnet Architectures
 ![Results from Resnet Comparisons](images/resnet_comparison.png)
+Fig. 6: Comparison of Resnet Architectures
 
 This chart summarizes our findings from experimentation with different variants of ResNet architecture (each distinguished by its number of layers) with batch sizes of 8 for 25 epochs. 
 - The two entries for ResNet 18 indicate the best performing epochs for recall_score (0.525) and error_rate (0.229), respectively. 
