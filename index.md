@@ -1,4 +1,4 @@
-a project by Sean O'Connor, Stephanie Yu, Georgia Kenderova, and Lucky Lim
+*project by Sean O'Connor, Stephanie Yu, Georgia Kenderova, and Lucky Lim
 
 # Video presentation
 
