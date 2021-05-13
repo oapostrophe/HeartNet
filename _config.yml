@@ -1,3 +1,4 @@
 theme: jekyll-theme-cayman
-title: HeartNet - Detecting heart attacks in pictures of 12-lead EKGs
+title: HeartNet
+description: A neural network for detecting heart attacks in pictures of 12-lead EKGs
 author: Sean O'Connor, Stephanie Yu, Georgia Kenderova, Lucky Lim
