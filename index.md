@@ -133,15 +133,11 @@ Before analyzing the results, let’s first define the [metrics](https://machine
 
 ![Results from Resnet Comparisons](images/resnet_comparison.png)
 
-This chart summarizes our findings from experimentation with different variants of ResNet architecture (each distinguished by its number of layers):
-- The two entries for ResNet 18 indicate the best performing epochs for recall_score (0.525) and error_rate (0.229), respectively. 
-- The subsequent entry for ResNet 34 displays the best performing epoch for error_rate (0.225). 
-- The first entry for ResNet 50 indicates the best performing epoch for recall_score (0.791), and the second entry for error_rate (0.197) and f1_score (0.800). 
-- The entry for ResNet 101 displays the best performing epoch for error_rate (0.210) and recall_score (0.873).
-- The entry for ResNet 152 indicates the best performing epoch for error_rate (0.174), precision (0.838) and f1_score (0.827). 
-We can observe that ResNet 152 outperforms each of the other ResNet models in the categories of error_rate, precision, and f1_score (ResNet 50 was a close second in each category). In other words, with the exception of minimizing false negatives (as measured by recall_score), ResNet 152 is our model of choice for image-based EKG classification.
-
-We decided to pursue further hyperparameter tuning with ResNet 152 while finding the optimal batch size. The following table captures our findings: 
+This chart summarizes our findings from experimentation with different variants of ResNet architecture (each distinguished by its number of layers).  For each architecture, metrics were recorded from the epoch with the lowet validation loss:
+- Resnet 152 shows the lowest error rate (17.4%), along with the highest precision (83.77%) and F1 score (82.69%)
+- Resnet 101 achieves highest recall (87.34%) along with the second best error rate (20.97%), at the expense of having the lowet precision (75.41%).
+- Resnet 50 achieves an only negligibly higher error rate than 101 (21.29%), along with more balanced recall (79.11%) and precision (79.11%) scores.
+As it appears to have the best overall performance, we decided to pursue further hyperparameter tuning with ResNet 152 while finding the optimal batch size. The following table captures our findings: 
 
 *Fig. 7: Comparison of Batch Sizes*
 
@@ -150,7 +146,7 @@ We decided to pursue further hyperparameter tuning with ResNet 152 while finding
 We can observe that a batch size of 8 minimizes error_rate and maximizes f1_score, while a batch size of 16 corresponds to the best recall_score and second lowest error rate. 
 
 ## Final results
-We then used our top two best-performing ResNets, ResNet 50 and ResNet 152, and batch sizes, 8 and 16, to conduct four trials on the full Dataset 2, 25 epochs each. 
+We then used two of our best-performing ResNets, ResNet 50 and ResNet 152, and batch sizes, 8 and 16, to conduct four trials on the full Dataset 2.  Based on the trends we observed in which epoch produced the best results during hyperparameter tuning, we reduced the number of training epochs to 25.
 
 *Fig. 8: Results training on full datset*
 
@@ -170,7 +166,7 @@ It's also important to note that the recall score, 70.2% ,is substantially lower
 
 According to these graphs, training loss for each of our four final models trended downwards until the 20 epoch mark, where it began to plateau or even experience a slight increase. Validation loss, on the other hand, experienced consistent, shallow decreases until the 20 epoch mark (with the exception of an unforeseen spike at 17 epochs for the ResNet 50 with a batch size of 8), where it began to plateau or trend upwards. These observations (namely, the decreasing training loss coupled with an increasing validation loss) enabled us to conclude that training each model beyond 20 epochs may have resulted in slight overfitting. 
 
-As an addendum to our explorations, we investigated the performance of our best-performing model on Dataset 3 (an augmented version of our dataset, in which shadows overlay a portion of the images). We were able to achieve 89.58% classification accuracy, recall of 73.08%, and an f1_score of 77.70%, demonstrating that the data augmentation did not result in a statistically significant decrease in the performance of our model. The following graph captures the decline of training loss that corresponded with the increase in number of epochs and reveals the successful learning that our model underwent. 
+As an addendum to our explorations, we investigated the performance of our best-performing model on Dataset 3 (an augmented version of our dataset, in which shadows overlay a portion of the images). The following graph captures the decline of training loss that corresponded with the increase in number of epochs and reveals the successful learning that our model underwent. 
 
 *Fig. 11: Training loss on Dataset 3 (images with shadows)*
 
@@ -180,7 +176,9 @@ As an addendum to our explorations, we investigated the performance of our best-
 
 ![Shadows validation loss](images/shadows_valid_epochs.png)
 
-As a final addendum, we also trained a model on Dataset 1 to investigate whether the differences in the images would decrease their ability to be accurately classified by a CNN.  Similar results were achieved: accuracy of 88.58%, recall 68.94%, and F1 score of 74.99%.
+We also trained a model on Dataset 1, the more roughly-plotted version made directly with MatPlotLib.  The following compares the results from each of our three datasets:
+
+![Dataset comparisons](images/dataset_comparison.png)
 
 ## RNN Testing
 The RNN we created was unsuccessful: we observed that throughout the entirety of the training process, the cost fluctuated drastically from training sample to training sample, rotating among the values of 0.0, 50.0 and 100.0. Since the training cost exhibited no decreasing or stabilizing patterns, we conclude that our RNN failed to learn.
