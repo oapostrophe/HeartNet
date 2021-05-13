@@ -1,3 +1,5 @@
+# Improved iteration plotting with wfdb database
+
 import pandas as pd
 import numpy as np
 import wfdb
@@ -101,7 +103,7 @@ def load_raw_data(df, sampling_rate, path):
 
 
 # Update with path to the ptbx folder
-path = "../data/"
+path = "/raid/heartnet/data/"
 sampling_rate=100
 
 # load and convert annotation data
@@ -185,7 +187,10 @@ import shutil
 
 mi = Y.index[Y["diagnostic_superclass"]]
 
+print(mi[0])
+
 for number in mi:
-    source = "../data/imgset2/normal/pt_"+str(number)+".png"
-    target = "../data/imgset2/mi/"
-    shutil.move(source, target)
+    pass
+    #source = "../data/imgset2/normal/pt_"+str(number)+".png"
+    #target = "../data/imgset2/mi/"
+    #shutil.move(source, target)
