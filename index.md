@@ -138,7 +138,7 @@ This chart summarizes our findings from experimentation with different variants 
 - Resnet 101 achieves highest recall (87.34%) along with the second best error rate (20.97%), at the expense of having the lowet precision (75.41%).
 - Resnet 50 achieves an only negligibly higher error rate than 101 (21.29%), along with more balanced recall (79.11%) and precision (79.11%) scores. 
 
-As it appears to have the best overall performance, we decided to pursue further hyperparameter tuning with ResNet 152 while finding the optimal batch size. The following table captures our findings: 
+As it appears to have the best overall performance, we decided to pursue further hyperparameter tuning with ResNet 152 while finding the optimal batch size.  Batch sizes above 24 had to be tested with a smaller resnet architecture due to memory limitations. The following table captures our findings: 
 
 *Fig. 7: Comparison of Batch Sizes*
 
