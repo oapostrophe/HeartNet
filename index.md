@@ -136,7 +136,8 @@ Before analyzing the results, let’s first define the [metrics](https://machine
 This chart summarizes our findings from experimentation with different variants of ResNet architecture (each distinguished by its number of layers).  For each architecture, metrics were recorded from the epoch with the lowet validation loss:
 - Resnet 152 shows the lowest error rate (17.4%), along with the highest precision (83.77%) and F1 score (82.69%)
 - Resnet 101 achieves highest recall (87.34%) along with the second best error rate (20.97%), at the expense of having the lowet precision (75.41%).
-- Resnet 50 achieves an only negligibly higher error rate than 101 (21.29%), along with more balanced recall (79.11%) and precision (79.11%) scores.
+- Resnet 50 achieves an only negligibly higher error rate than 101 (21.29%), along with more balanced recall (79.11%) and precision (79.11%) scores. 
+
 As it appears to have the best overall performance, we decided to pursue further hyperparameter tuning with ResNet 152 while finding the optimal batch size. The following table captures our findings: 
 
 *Fig. 7: Comparison of Batch Sizes*
