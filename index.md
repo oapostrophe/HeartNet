@@ -179,7 +179,12 @@ As an addendum to our explorations, we investigated the performance of our best-
 
 We also trained a model on Dataset 1, the more roughly-plotted version made directly with MatPlotLib.  The following compares the results from each of our three datasets:
 
+*Fig. 13: Results from Datasets 1, 2, and 3*
+
 ![Dataset comparisons](images/dataset_comparison.png)
+
+Ultimately, all three Datasets are able to be classified with only a few percentage point difference in accuracy metrics.
+
 
 ## RNN Testing
 The RNN we created was unsuccessful: we observed that throughout the entirety of the training process, the cost fluctuated drastically from training sample to training sample, rotating among the values of 0.0, 50.0 and 100.0. Since the training cost exhibited no decreasing or stabilizing patterns, we conclude that our RNN failed to learn.
