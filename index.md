@@ -3,7 +3,7 @@ The automated diagnosis of Myocardial Infarction (MI) in 12-lead Electrocardiogr
 
 # Video presentation
 [![Video thumbnail](images/thumbnail.png)](https://youtu.be/58mDmx0qW_w)
-*Click the image to view*
+*Click the image to view on YouTube*
 
 # Introduction
 
