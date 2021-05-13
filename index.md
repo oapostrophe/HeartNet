@@ -1,5 +1,4 @@
-# HeartNet: Detecting MI in images of 12-lead EKGs 
-Sean O'Connor, Stephanie Yu, Georgia Kenderova, Lucky Lim
+a project by Sean O'Connor, Stephanie Yu, Georgia Kenderova, and Lucky Lim
 
 # Video presentation
 
