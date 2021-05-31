@@ -6,7 +6,7 @@ The trained model can be demoed by downloading `app.py` and `demo_model.pkl`, in
 ```shell
 streamlit run app.py
 ```
-You can then visit the provided url in your browser; for convenience, sample generated MI and Normal EKG images are provided in the "test images" folder.
+You can then visit the provided url in your browser; for convenience, sample generated MI and Normal EKG images are provided in the `/test files` directory.
 
 To use any of the other files, you'll have to download the [PTB-XL](https://physionet.org/content/ptb-xl/1.0.1/) dataset.
 
