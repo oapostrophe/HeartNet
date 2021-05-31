@@ -10,6 +10,7 @@ from wfdb.io._signal import downround, upround
 
 def calc_ecg_grids(minsig, maxsig, sig_units, fs, maxt, time_units):
     """
+    Modified function from WDFB-Python: https://github.com/MIT-LCP/wfdb-python
     Calculate tick intervals for ECG grids.
     - 5mm 0.2s major grids, 0.04s minor grids.
     - 0.5mV major grids, 0.125 minor grids.
@@ -78,33 +79,11 @@ def calc_ecg_grids(minsig, maxsig, sig_units, fs, maxt, time_units):
     return (major_ticks_x, minor_ticks_x, major_ticks_y, minor_ticks_y)
 
 
-def load_raw_data(df, sampling_rate, path):
-    if sampling_rate == 100:
-        """
-        # Original code: gets entire 100hz dataset
-        data = [wfdb.rdsamp(path+f) for f in df.filename_lr]
-        """
-        """
-        # New code: Get just one record instead
-        return wfdb.rdrecord("./data/records500/00000/00001_hr")
-        """
-        return [wfdb.rdrecord(path+f) for f in df.filename_lr]
-        
-    else:
-        """ Original code: gets entire 500hz dataset
-        data = [wfdb.rdsamp(path+f) for f in df.filename_hr]
-        """
-
-        # New code: Get just one record instead
-        #data = [wfdb.rdrecord("./records500/00000/00001_hr")]
-
-    #data = np.array([signal for signal, meta in data])
-   # return data
-
+def load_raw_data(df, path):
+    return [wfdb.rdrecord(path+f) for f in df.filename_lr]
 
 # Update with path to the ptbx folder
 path = "/raid/heartnet/data/"
-sampling_rate=100
 
 # load and convert annotation data
 Y = pd.read_csv(path+'ptbxl_database.csv', index_col='ecg_id')
@@ -114,7 +93,7 @@ Y.scp_codes = Y.scp_codes.apply(lambda x: ast.literal_eval(x))
 agg_df = pd.read_csv(path+'scp_statements.csv', index_col=0)
 agg_df = agg_df[agg_df.diagnostic == 1]
 
-# Modified to store MI / non-MI:
+# Determine label as MI / non-MI:
 def aggregate_diagnostic(y_dic):
     tmp = []
     for key in y_dic.keys():
@@ -125,26 +104,22 @@ def aggregate_diagnostic(y_dic):
 # Apply diagnostic superclass
 Y['diagnostic_superclass'] = Y.scp_codes.apply(aggregate_diagnostic)
 
-
-"""
 # Load raw signal data
-X = load_raw_data(Y, sampling_rate, path)
+X = load_raw_data(Y, path)
 
+# Plot all records
 patient_number = 1
-
 for record in X:
     fig = wfdb.plot_wfdb(record, title=" ", time_units="seconds", ecg_grids="all", return_fig=True)
     childs = fig.get_children()[1:]
     for child in childs:
+
+        # Normalize y limits, remove ticks
         axes = child.axes
         axes.set_ylim([-1, 1])
         axes.tick_params(bottom=False, top=False, right=False, left=False)
 
-        # Redundant with set axis off at end
-        #for spine in child.axes.spines.values():
-        #   spine.set_visible(False)
-        
-        # Copied ecg grid code
+        # Modified ECG grid code from WFDB-Python: https://github.com/MIT-LCP/wfdb-python
         auto_xlims = axes.get_xlim()
         auto_ylims= axes.get_ylim()
 
@@ -180,17 +155,10 @@ for record in X:
     patient_number += 1
     plt.close(fig)
 
-
-"""
-# Divide up MI vs non-MI images into directories
+# Move MI and non-MI images into separate directories
 import shutil
-
 mi = Y.index[Y["diagnostic_superclass"]]
-
-print(mi[0])
-
 for number in mi:
-    pass
-    #source = "../data/imgset2/normal/pt_"+str(number)+".png"
-    #target = "../data/imgset2/mi/"
-    #shutil.move(source, target)
+    source = "../data/imgset2/normal/pt_"+str(number)+".png"
+    target = "../data/imgset2/mi/"
+    shutil.move(source, target)
