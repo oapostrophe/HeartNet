@@ -12,10 +12,11 @@ To use any of the other files, you'll have to download the [PTB-XL](https://phys
 
 The important files are the following:
 - `app.py` StreamLit-based web interface using a trained model
-- `generate_imgset1.py` our initial attempt generating a dataset directly with MatPlotLib; these images are a bit rough-looking
-- `generate_imgset2.py` our refined version that generates nicer-looking images
-- `generate_imgset3.py` adds random shadows overlaying generated images
-- `generate_rnn_imgset.py` generates individual images for each of 12 leads, for input into an RNN
+- `dataset generation/generate_imgset1.py` our initial attempt generating a dataset directly with MatPlotLib; these images are a bit rough-looking
+- `dataset generation/generate_imgset2.py` our refined version that generates nicer-looking images
+- `dataset generation/generate_imgset3.py` adds random shadows overlaying generated images
+- `dataset generation/generate_rnn_imgset.py` generates individual images for each of 12 leads, for input into an RNN (rnn code currently fails to learn).
 - `cnn_learner.py` trains and saves a cnn on generated images.
 - `automold.py` library with image augmentation code for adding shadows
-- `rnn.py` attempts to train an rnn on generated images (rnn currently fails to learn)
+
+Feel free to [email me](swow2015@mymail.pomona.edu) with any questions!
