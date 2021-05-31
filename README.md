@@ -1,5 +1,7 @@
 # HeartNet
 
+A joint project by [oapostrophe](https://github.com/oapostrophe), [gkenderova](https://github.com/gkenderova), [soksamnanglim](https://github.com/soksamnanglim), [syaa2018](https://github.com/syaa2018)
+
 For a high-level overview of this project, check out this [blog post](https://oapostrophe.github.io/heartnet/).  For a video presentation and more detailed writeup on our methodology, check out the report on our [project website](https://oapostrophe.github.io/HeartNet/).
 
 The trained model can be demoed by downloading `app.py` and `demo_model.pkl`, installing [streamlit](https://anaconda.org/conda-forge/streamlit), then running:
