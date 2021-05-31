@@ -10,14 +10,14 @@ There are a number of healthcare settings in which automatic EKG interpretation 
 I’d propose to create a neural network based application that makes accurate neural network-based EKG interpretation accessible to the general public.  Building on prior models, I want to create either a website or mobile phone app where users can take a picture of an EKG and quickly get an accurate classification.  Such an application could be a proof of concept for how healthcare providers, particularly EMS medical directors, could easily incorporate neural-network based EKG interpretation into their medical systems.
 
 
-![EKG image](/images/ekg.jpg)
+![EKG image](./images/ekg.jpg)
 (A picture of an EKG indicating an ST-Elevated Myocardial Infarction, more commonly known as a heart attack)
 
-![12-lead image](/images/12lead.jpg)
+![12-lead image](./images/12lead.jpg)
 
 (A 12-lead EKG being simulated on a mannequin.  Each "lead" is an electrode sticker placed on the patient's skin which detects electrical activity.  In a 12-lead, each lead is placed in a different position to capture the heart's activity from different angles, allowing detection of more subtle phenomena than a single lead could measure alone.  The measured waveform can be seen on the monitor behind the mannequin.)
 
-![paramedic image](/images/paramedic.jpg)
+![paramedic image](./images/paramedic.jpg)
 
 (A paramedic interpreting an EKG printout in the ambulance.  EKGs from mobile monitors used by EMS are printed out on long thin strips as seen here.  While paramedics-level providers are trained to interpret EKGs, EMTs that provide most services in many large cities aren't trained to interpret EKG results.)
 
