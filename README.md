@@ -16,7 +16,7 @@ The important files are the following:
 - `dataset generation/generate_imgset2.py` our refined version that generates nicer-looking images
 - `dataset generation/generate_imgset3.py` adds random shadows overlaying generated images
 - `dataset generation/generate_rnn_imgset.py` generates individual images for each of 12 leads, for input into an RNN (rnn code currently fails to learn).
-- `cnn_learner.py` trains and saves a cnn on generated images.
-- `automold.py` library with image augmentation code for adding shadows
+- `dataset generation/automold.py` library with image augmentation code for adding shadows
+- `training/cnn_learner.py` trains and saves a cnn on generated images.
 
 Feel free to [email me](swow2015@mymail.pomona.edu) with any questions!
