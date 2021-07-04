@@ -1,5 +1,7 @@
 # HeartNet
 
+A joint project by [oapostrophe](https://github.com/oapostrophe), [gkenderova](https://github.com/gkenderova), [soksamnanglim](https://github.com/soksamnanglim), [syaa2018](https://github.com/syaa2018)
+
 For a high-level overview of this project, check out this [blog post](https://oapostrophe.github.io/heartnet/).  For a video presentation and more detailed writeup on our methodology, check out the report on our [project website](https://oapostrophe.github.io/HeartNet/).
 
 The trained model can be demoed by downloading `app.py` and `demo_model.pkl`, installing [streamlit](https://anaconda.org/conda-forge/streamlit), then running:
@@ -12,10 +14,11 @@ To use any of the other files, you'll have to download the [PTB-XL](https://phys
 
 The important files are the following:
 - `app.py` StreamLit-based web interface using a trained model
-- `dataset_generation/generate_imgset1.py` first iteration generating a dataset directly with MatPlotLib; these images look rough
-- `dataset_generation/generate_imgset2.py` second iteration that generates nicer-looking images
-- `dataset_generation/generate_imgset3.py` adds simulated shadows overlaying generated images
-- `dataset_generation/generate_rnn_imgset.py` generates individual images for each of 12 leads, for input into an RNN
+- `dataset generation/generate_imgset1.py` our first iteration generating a dataset directly with MatPlotLib; these images look rough.
+- `dataset generation/generate_imgset2.py` our second iteration that generates nicer-looking images
+- `dataset generation/generate_imgset3.py` adds random simulated shadows overlaying generated images
+- `dataset generation/generate_rnn_imgset.py` generates individual images for each of 12 leads, for input into an RNN (rnn code currently fails to learn).
+- `dataset generation/automold.py` library with image augmentation code for adding shadows
 - `training/cnn_learner.py` trains and saves a cnn on generated images.
-- `automold.py` library with image augmentation code for adding shadows
-- `training/rnn/rnn.py` attempts to train an rnn on generated images (rnn currently fails to learn)
+
+Feel free to [email me](swow2015@mymail.pomona.edu) with any questions!
