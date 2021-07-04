@@ -3,8 +3,8 @@ fastbook.setup_book()
 from fastbook import *
 from fastai.vision.widgets import *
 
-# Pick a GPU with free resources
-torch.cuda.set_device(2)
+# Pick a GPU with free resources (change this accordingly)
+torch.cuda.set_device(0)
 
 # Get images
 image_path = Path('/raid/heartnet/data/imgset2')

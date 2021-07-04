@@ -1,92 +1,66 @@
-# Original code for generating dataset strictly with matplotlib
+# Code for generating dataset strictly with matplotlib.
 
-
-import pandas as pd
-import numpy as np
-import wfdb
 import ast
+import cv2
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import shutil
+import wfdb
 
-def load_raw_data(df, sampling_rate, path):
+def load_raw_data(annotations, sampling_rate, path):
+    """
+    Loads raw data from ptb_xl dataset into a numpy array.
+    
+    Parameters:
+    annotations (dataframe): dataframe with list of EKG record filenames in dataset
+    sampling_rate (int): 100 to read downsampled files, 500 for full resolution
+    path (str): path to ptb_xl dataset files
+
+    Returns:
+    np array: list of EKG records
+    """
     if sampling_rate == 100:
-        # Original code: gets entire 100hz dataset
-        
-        
-        data = [wfdb.rdsamp(path+f) for f in df.filename_lr]
-        """
-        # New code: Get just one record instead
-        data = [wfdb.rdsamp(path+"records100/21000/21837_lr")]
-        """
-        
-        
+        data = [wfdb.rdsamp(path+filename) for filename in annotations.filename_lr]      
     else:
-        """ Original code: gets entire 500hz dataset
-        data = [wfdb.rdsamp(path+f) for f in df.filename_hr]
-        """
-
-        # New code: Get just one record instead
-        data = [wfdb.rdsamp("./records500/00000/00001_hr")]
-
+        data = [wfdb.rdsamp(path+filename) for filename in annotations.filename_hr]
     data = np.array([signal for signal, meta in data])
     return data
 
 
-# Update with path to the ptbx folder
-path = "/raid/heartnet/data/"
-sampling_rate=100
-
-# load and convert annotation data
-Y = pd.read_csv(path+'ptbxl_database.csv', index_col='ecg_id')
-
-Y.scp_codes = Y.scp_codes.apply(lambda x: ast.literal_eval(x))
-
-# Load raw signal data
-X = load_raw_data(Y, sampling_rate, path)
-
-# Load scp_statements.csv for diagnostic aggregation
-agg_df = pd.read_csv(path+'scp_statements.csv', index_col=0)
-agg_df = agg_df[agg_df.diagnostic == 1]
-
-"""
-Original code:
 def aggregate_diagnostic(y_dic):
-    tmp = []
-    for key in y_dic.keys():
-        if key in agg_df.index:
-            tmp.append(agg_df.loc[key].diagnostic_class)
-    return list(set(tmp))
-"""
+    """
+    Generates MI / Normal label for a record from more detailed annotation data.
 
-# Modified to store MI / non-MI:
-def aggregate_diagnostic(y_dic):
+    Parameters:
+    y_dic (dict): dictionary with diagnostic classes for a record
+
+    Return:
+    (bool) True if record is an MI, False if normal.
+    """
     tmp = []
     for key in y_dic.keys():
         if key in agg_df.index:
             tmp.append(agg_df.loc[key].diagnostic_class)
     return "MI" in tmp
 
-# Apply diagnostic superclass
+
+path = "/path/to/ptb_xl" # TODO: before running, replace this with your path to the PTB_xl dataset
+
+# Get EKG labels
+Y = pd.read_csv(path+'ptbxl_database.csv', index_col='ecg_id')
+Y.scp_codes = Y.scp_codes.apply(lambda x: ast.literal_eval(x))
+
+# Load scp_statements.csv for diagnostic aggregation
+agg_df = pd.read_csv(path+'scp_statements.csv', index_col=0)
+agg_df = agg_df[agg_df.diagnostic == 1]
 Y['diagnostic_superclass'] = Y.scp_codes.apply(aggregate_diagnostic)
 
-"""# Split data into train and test
-test_fold = 10
-# Train
-X_train = X[np.where(Y.strat_fold != test_fold)]
-y_train = Y[(Y.strat_fold != test_fold)].diagnostic_superclass
-# Test
-X_test = X[np.where(Y.strat_fold == test_fold)]
-y_test = Y[Y.strat_fold == test_fold].diagnostic_superclass
+sampling_rate=100
+X = load_raw_data(Y, sampling_rate, path)
 
-"""
-"""
-# Generate just first 100 records for testing
-first_100 = Y[Y.index < 100]
-"""
 # Generate images
-import cv2
-import matplotlib.pyplot as plt
-
 patient_number = 1
-
 for patient in X:
 
     # Concatenate 12 leads into an image
@@ -99,7 +73,7 @@ for patient in X:
             lead_number = row*4 + col
             data = patient[ :, lead_number]
 
-            # Plot with MatPlotLib
+            # Plot lead
             fig = plt.figure(frameon=False)
             plt.plot(data) 
 
@@ -115,10 +89,10 @@ for patient in X:
             im_gray = cv2.imread(filename, cv2.IMREAD_GRAYSCALE)
             im_gray = cv2.resize(im_gray, (512, 512), interpolation = cv2.INTER_LANCZOS4)
 
-            # Add to images for current row
+            # Add lead to row
             col_images.append(im_gray)
 
-        # Concatenate current row together, add to list of rows
+        # Concatenate row images together, add to list of rows
         im_row = cv2.hconcat(col_images)
         row_images.append(im_row)
 
@@ -127,11 +101,8 @@ for patient in X:
     cv2.imwrite(path+"imgset1/normal/pt_" + str(patient_number) + ".png", im_final)
     patient_number += 1
 
-# Divide up MI vs non-MI images into directories
-import shutil
-
+# Divide MI and Normal images into separate directories
 mi = Y.index[Y["diagnostic_superclass"]]
-
 for number in mi:
     source = path+"imgset1/normal/pt_"+str(number)+".png"
     target = path+"imgset1/mi/"

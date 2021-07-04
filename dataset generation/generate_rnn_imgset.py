@@ -1,62 +1,70 @@
 # Generate separate lead images for RNN
 
-
-import pandas as pd
-import numpy as np
-import wfdb
 import ast
+import cv2
+import matplotlib.pyplot as plt
+import numpy as np
+import os
+import pandas as pd
+import shutil
+import wfdb
 
-def load_raw_data(df, sampling_rate, path):
+def load_raw_data(annotations, sampling_rate, path):
+    """
+    Loads raw data from ptb_xl dataset into a numpy array.
+    
+    Parameters:
+    annotations (dataframe): dataframe with list of EKG record filenames in dataset
+    sampling_rate (int): 100 to read downsampled files, 500 for full resolution
+    path (str): path to ptb_xl dataset files
+
+    Returns:
+    np array: list of EKG records
+    """
     if sampling_rate == 100:
-        data = [wfdb.rdsamp(path+f) for f in df.filename_lr]      
+        data = [wfdb.rdsamp(path+f) for f in annotations.filename_lr]      
     else:
-        data = [wfdb.rdsamp(path+f) for f in df.filename_hr]
-
-        # Alternate code to get just one record instead
-        # data = [wfdb.rdsamp("./records500/00000/00001_hr")]
-
+        data = [wfdb.rdsamp(path+f) for f in annotations.filename_hr]
     data = np.array([signal for signal, meta in data])
     return data
 
 
-# Update with path to the ptbx folder
-path = "/raid/heartnet/data/"
-sampling_rate=100
-
-# load and convert annotation data
-Y = pd.read_csv(path+'ptbxl_database.csv', index_col='ecg_id')
-Y.scp_codes = Y.scp_codes.apply(lambda x: ast.literal_eval(x))
-
-# Load raw signal data
-X = load_raw_data(Y, sampling_rate, path)
-
-# Load scp_statements.csv for diagnostic aggregation
-agg_df = pd.read_csv(path+'scp_statements.csv', index_col=0)
-agg_df = agg_df[agg_df.diagnostic == 1]
-
-# Get labels as MI / non-MI
 def aggregate_diagnostic(y_dic):
+    """
+    Generates MI / Normal label for a record from more detailed annotation data.
+
+    Parameters:
+    y_dic (dict): dictionary with diagnostic classes for a record
+
+    Return:
+    (bool) True if record is an MI, False if normal.
+    """
     tmp = []
     for key in y_dic.keys():
         if key in agg_df.index:
             tmp.append(agg_df.loc[key].diagnostic_class)
     return "MI" in tmp
 
+
+path = "/raid/heartnet/data/" #TODO: Update with path to the ptbx folder before running
+
+# load and convert annotation data
+Y = pd.read_csv(path+'ptbxl_database.csv', index_col='ecg_id')
+Y.scp_codes = Y.scp_codes.apply(lambda x: ast.literal_eval(x))
+
+# Load scp_statements.csv for diagnostic aggregation
+agg_df = pd.read_csv(path+'scp_statements.csv', index_col=0)
+agg_df = agg_df[agg_df.diagnostic == 1]
+
 # Apply diagnostic superclass
 Y['diagnostic_superclass'] = Y.scp_codes.apply(aggregate_diagnostic)
 
-
-# Generate just first 100 records for testing
-# first_100 = Y[Y.index < 100]
+# Load raw signal data
+sampling_rate=100
+X = load_raw_data(Y, sampling_rate, path)
 
 # Generate images
-import cv2
-import matplotlib.pyplot as plt
-import os
-import shutil
-
 patient_number = 1
-
 for patient in X:
 
     # Make pt directory
@@ -90,10 +98,7 @@ for patient in X:
     patient_number += 1
 
 # Divide up MI vs non-MI images into directories
-import shutil
-
 mi = Y.index[Y["diagnostic_superclass"]]
-
 for number in mi:
     source = path+"imgset_rnn/normal/pt_"+str(number)
     target = path+"imgset_rnn/mi/"

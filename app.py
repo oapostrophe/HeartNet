@@ -1,7 +1,7 @@
+from fastai.vision.all import *
 from io import BytesIO
 import requests
 import streamlit as st
-from fastai.vision.all import *
 
 """
 # HeartNet
